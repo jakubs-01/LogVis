@@ -123,7 +123,7 @@ export default function NavBar({
     window.location.href =
       path === "Home"
         ? "/"
-        : path === "Charts"
+        : path === "Query Logs"
         ? "/query-logs"
         : `/${path.toLowerCase()}`;
   };
@@ -161,7 +161,7 @@ export default function NavBar({
               <MenuIcon />
             </IconButton>
             <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
-              {["Home", "Analyze", "Logs", "Charts"].map((text) => (
+              {["Home", "Analyze", "Logs", "Query Logs"].map((text) => (
                 <MenuItem key={text} onClick={() => navigateTo(text)}>
                   {text}
                 </MenuItem>
@@ -183,7 +183,7 @@ export default function NavBar({
 
           {/* Desktop Navigation */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-            {["Home", "Analyze", "Logs", "Charts"].map((text) => (
+            {["Home", "Analyze", "Logs", "Query Logs"].map((text) => (
               <Button
                 key={text}
                 variant="text"
