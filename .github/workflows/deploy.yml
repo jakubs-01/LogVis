@@ -39,7 +39,7 @@ jobs:
             echo "Starting deployment..."
 
             # Navigate to project directory
-            cd /home/jakubapp-dev/logvis
+            cd /home/jakubapp-dev/LogVis
 
             # Update frontend
             cd logvis-frontend
