@@ -1,0 +1,3045 @@
+{
+  "data": {
+    "__schema": {
+      "types": [
+        {
+          "name": "Query",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "characterData",
+              "description": "Obtain the character data object that allows the retrieval of individual characters or filtered collections of characters.",
+              "type": { "name": "CharacterData", "kind": "OBJECT" }
+            },
+            {
+              "name": "gameData",
+              "description": "Obtain the game data object that holds collections of static data such as abilities, achievements, classes, items, NPCs, etc..",
+              "type": { "name": "GameData", "kind": "OBJECT" }
+            },
+            {
+              "name": "guildData",
+              "description": "Obtain the guild data object that allows the retrieval of individual guilds or filtered collections of guilds.",
+              "type": { "name": "GuildData", "kind": "OBJECT" }
+            },
+            {
+              "name": "progressRaceData",
+              "description": "Obtain information about an ongoing world first or realm first race. Inactive when no race is occurring. This data only updates once every 30 seconds, so you do not need to fetch this information more often than that.",
+              "type": { "name": "ProgressRaceData", "kind": "OBJECT" }
+            },
+            {
+              "name": "rateLimitData",
+              "description": "Obtain the rate limit data object to see how many points have been spent by this key.",
+              "type": { "name": "RateLimitData", "kind": "OBJECT" }
+            },
+            {
+              "name": "reportData",
+              "description": "Obtain the report data object that allows the retrieval of individual reports or filtered collections of reports by guild or by user.",
+              "type": { "name": "ReportData", "kind": "OBJECT" }
+            },
+            {
+              "name": "userData",
+              "description": "Obtain the user object that allows the retrieval of the authorized user's id and username.",
+              "type": { "name": "UserData", "kind": "OBJECT" }
+            },
+            {
+              "name": "worldData",
+              "description": "Obtain the world data object that holds collections of data such as all expansions, regions, subregions, servers, dungeon/raid zones, and encounters.",
+              "type": { "name": "WorldData", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "CharacterData",
+          "kind": "OBJECT",
+          "description": "The CharacterData object enables the retrieval of single characters or filtered collections of characters.",
+          "fields": [
+            {
+              "name": "character",
+              "description": "Obtain a specific character either by id or by name/server_slug/server_region.",
+              "type": { "name": "Character", "kind": "OBJECT" }
+            },
+            {
+              "name": "characters",
+              "description": "A collection of characters for a specific guild.",
+              "type": { "name": "CharacterPagination", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "Int",
+          "kind": "SCALAR",
+          "description": "The `Int` scalar type represents non-fractional signed whole numeric\nvalues. Int can represent values between -(2^31) and 2^31 - 1. ",
+          "fields": null
+        },
+        {
+          "name": "String",
+          "kind": "SCALAR",
+          "description": "The `String` scalar type represents textual data, represented as UTF-8\ncharacter sequences. The String type is most often used by GraphQL to\nrepresent free-form human-readable text.",
+          "fields": null
+        },
+        {
+          "name": "Character",
+          "kind": "OBJECT",
+          "description": "A player character. Characters can earn individual rankings and appear in reports.",
+          "fields": [
+            {
+              "name": "canonicalID",
+              "description": "The canonical ID of the character. If a character renames or transfers, then the canonical id can be used to identify the most recent version of the character.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "claimed",
+              "description": "Whether this character is claimed by the current user. Only accessible if accessed via the user API with the \"view-user-profile\" scope.",
+              "type": { "name": "Boolean", "kind": "SCALAR" }
+            },
+            {
+              "name": "classID",
+              "description": "The class id of the character.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "encounterRankings",
+              "description": "Encounter rankings information for a character, filterable to specific zones, bosses, metrics, etc. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "faction",
+              "description": "The faction of the character.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "gameData",
+              "description": "Cached game data such as gear for the character. This data was fetched from the appropriate source (Blizzard APIs for WoW, Lodestone for FF). This call will only return a cached copy of the data if it exists already. It will not go out to Blizzard or Lodestone to fetch a new copy.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "guildRank",
+              "description": "The guild rank of the character in their primary guild. This is not the user rank on the site, but the rank according to the game data, e.g., a Warcraft guild rank or an FFXIV Free Company rank.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "guilds",
+              "description": "All guilds that the character belongs to.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "hidden",
+              "description": "Whether or not the character has all its rankings hidden.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "id",
+              "description": "The ID of the character.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "level",
+              "description": "The level of the character.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the character.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "recentReports",
+              "description": "Recent reports for the character.",
+              "type": { "name": "ReportPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "server",
+              "description": "The server that the character belongs to.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "zoneRankings",
+              "description": "Rankings information for a character, filterable to specific zones, bosses, metrics, etc. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "Boolean",
+          "kind": "SCALAR",
+          "description": "The `Boolean` scalar type represents `true` or `false`.",
+          "fields": null
+        },
+        {
+          "name": "RankingCompareType",
+          "kind": "ENUM",
+          "description": "Whether or not rankings are compared against best scores for the entire tier or against all parses in a two week window.",
+          "fields": null
+        },
+        {
+          "name": "CharacterRankingMetricType",
+          "kind": "ENUM",
+          "description": "All the possible metrics.",
+          "fields": null
+        },
+        {
+          "name": "RoleType",
+          "kind": "ENUM",
+          "description": "Used to specify a tank, healer or DPS role.",
+          "fields": null
+        },
+        {
+          "name": "RankingTimeframeType",
+          "kind": "ENUM",
+          "description": "Whether or not rankings are today or historical.",
+          "fields": null
+        },
+        { "name": "JSON", "kind": "SCALAR", "description": "", "fields": null },
+        {
+          "name": "GameFaction",
+          "kind": "OBJECT",
+          "description": "A faction that a player or guild can belong to. Factions have an integer id used to identify them throughout the API and a localized name describing the faction.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "An integer representing the faction id.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the faction.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "Guild",
+          "kind": "OBJECT",
+          "description": "A single guild. Guilds earn their own rankings and contain characters. They may correspond to a guild in-game or be a custom guild created just to hold reports and rankings.",
+          "fields": [
+            {
+              "name": "attendance",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "competitionMode",
+              "description": "Whether or not the guild has competition mode enabled.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "description",
+              "description": "The description for the guild that is displayed with the guild name on the site.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "faction",
+              "description": "The faction of the guild.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "id",
+              "description": "The ID of the guild.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the guild.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "server",
+              "description": "The server that the guild belongs to.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "stealthMode",
+              "description": "Whether or not the guild has stealth mode enabled.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "tags",
+              "description": "The tags used to label reports. In the site UI, these are called raid teams.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "members",
+              "description": "The member roster for a specific guild. The result of this query is a paginated list of characters. This query only works for games where the guild roster is verifiable, e.g., it does not work for Classic Warcraft.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "currentUserRank",
+              "description": "The current user's rank within the guild. Only accessible via user authentication with the \"view-user-profile\" scope.",
+              "type": { "name": "GuildRank", "kind": "ENUM" }
+            },
+            {
+              "name": "zoneRanking",
+              "description": "The guild's ranking for a zone. If `zoneId` is unset or null, uses the latest zone.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GuildAttendancePagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GuildAttendance",
+          "kind": "OBJECT",
+          "description": "Attendance for a specific report within a guild.",
+          "fields": [
+            {
+              "name": "code",
+              "description": "The code of the report for the raid night.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "players",
+              "description": "The players that attended that raid night.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "startTime",
+              "description": "The start time of the raid night.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            },
+            {
+              "name": "zone",
+              "description": "The principal zone of the raid night.",
+              "type": { "name": "Zone", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "PlayerAttendance",
+          "kind": "OBJECT",
+          "description": "Attendance for a specific player on a specific raid night.",
+          "fields": [
+            {
+              "name": "name",
+              "description": "The name of the player.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "type",
+              "description": "The class of the player.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "presence",
+              "description": "Presence info for the player. A value of 1 means the player was present. A value of 2 indicates present but on the bench.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "Float",
+          "kind": "SCALAR",
+          "description": "The `Float` scalar type represents signed double-precision fractional\nvalues as specified by\n[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ",
+          "fields": null
+        },
+        {
+          "name": "Zone",
+          "kind": "OBJECT",
+          "description": "A single zone from an expansion that represents a raid, dungeon, arena, etc.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the zone.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "brackets",
+              "description": "The bracket information for this zone. This field will be null if the zone does not support brackets.",
+              "type": { "name": "Bracket", "kind": "OBJECT" }
+            },
+            {
+              "name": "difficulties",
+              "description": "A list of all the difficulties supported for this zone.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "encounters",
+              "description": "The encounters found within this zone.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "expansion",
+              "description": "The expansion that this zone belongs to.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "frozen",
+              "description": "Whether or not the entire zone (including all its partitions) is permanently frozen. When a zone is frozen, data involving that zone will never change and can be cached forever.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the zone.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "partitions",
+              "description": "A list of all the partitions supported for this zone.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "Bracket",
+          "kind": "OBJECT",
+          "description": "A bracket description for a given raid zone. Brackets have a minimum value, maximum value, and a bucket that can be used to establish all of the possible brackets. The type field indicates what the brackets represent, e.g., item levels or game patches, etc.",
+          "fields": [
+            {
+              "name": "min",
+              "description": "An integer representing the minimum value used by bracket number 1, etc.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "max",
+              "description": "An integer representing the value used by bracket N when there are a total of N brackets, etc.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "bucket",
+              "description": "A float representing the value to increment when moving from bracket 1 to bracket N, etc.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "type",
+              "description": "The localized name of the bracket type.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "Difficulty",
+          "kind": "OBJECT",
+          "description": "A single difficulty for a given raid zone. Difficulties have an integer value representing the actual difficulty, a localized name that describes the difficulty level, and a list of valid sizes for the difficulty level.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "An integer representing a specific difficulty level within a zone. For example, in World of Warcraft, this could be Mythic. In FF, it could be Savage, etc.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name for the difficulty level.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "sizes",
+              "description": "A list of supported sizes for the difficulty level. An empty result means that the difficulty level has a flexible raid size.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "Encounter",
+          "kind": "OBJECT",
+          "description": "A single encounter for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the encounter.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the encounter.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "characterRankings",
+              "description": "Player rankings information for a zone. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "fightRankings",
+              "description": "Fight rankings information for a zone. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "zone",
+              "description": "The zone that this encounter is found in.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "journalID",
+              "description": "The Blizzard journal ID, used as the identifier in the encounter journal and various Blizzard APIs like progression.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "LeaderboardRank",
+          "kind": "ENUM",
+          "description": "Source of the rank. Most ranks only support log ranks, but some games (ESO) and content types (Retail WoW M+) support leaderboard ranks with no backing log.",
+          "fields": null
+        },
+        {
+          "name": "HardModeLevelRankFilter",
+          "kind": "ENUM",
+          "description": "Hard mode level filter. Used for WoW Classic Hard Modes. For ESO hard modes, use `difficulty`. Hard mode levels range from 0-4, with 0 being normal mode and 4 being the highest hard mode.",
+          "fields": null
+        },
+        {
+          "name": "ExternalBuffRankFilter",
+          "kind": "ENUM",
+          "description": "Whether to include ranks with major external buffs. Not all metrics, zones and games support this. It will be ignored if unsupported.",
+          "fields": null
+        },
+        {
+          "name": "FightRankingMetricType",
+          "kind": "ENUM",
+          "description": "All the possible metrics.",
+          "fields": null
+        },
+        {
+          "name": "Expansion",
+          "kind": "OBJECT",
+          "description": "A single expansion for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the expansion.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the expansion.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "zones",
+              "description": "The zones (e.g., raids and dungeons) supported for this expansion.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "Partition",
+          "kind": "OBJECT",
+          "description": "A single partition for a given raid zone. Partitions have an integer value representing the actual partition and a localized name that describes what the partition represents. Partitions contain their own rankings, statistics and all stars.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "An integer representing a specific partition within a zone.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name for partition.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "compactName",
+              "description": "The compact localized name for the partition. Typically an abbreviation to conserve space.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "default",
+              "description": "Whether or not the partition is the current default when viewing rankings or statistics for the zone.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "Server",
+          "kind": "OBJECT",
+          "description": "A single server. Servers correspond to actual game servers that characters and guilds reside on.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the server.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the server in the locale of the subregion that the server belongs to.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "normalizedName",
+              "description": "The normalized name is a transformation of the name, dropping spaces. It is how the server appears in a World of Warcraft log file.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "slug",
+              "description": "The server slug, also a transformation of the name following Blizzard rules. For retail World of Warcraft realms, this slug will be in English. For all other games, the slug is just a transformation of the name field.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "region",
+              "description": "The region that this server belongs to.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "subregion",
+              "description": "The subregion that this server belongs to.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "guilds",
+              "description": "The guilds found on this server (and any servers connected to this one.",
+              "type": { "name": "GuildPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "characters",
+              "description": "The characters found on this server (and any servers connected to this one.",
+              "type": { "name": "CharacterPagination", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "Region",
+          "kind": "OBJECT",
+          "description": "A single region for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the region.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "compactName",
+              "description": "The localized compact name of the region, e.g., US for United States.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the region.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "slug",
+              "description": "The slug for the region, usable when looking up characters and guilds by server.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "subregions",
+              "description": "The subregions found within this region.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "servers",
+              "description": "The servers found within this region.",
+              "type": { "name": "ServerPagination", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "Subregion",
+          "kind": "OBJECT",
+          "description": "A single subregion. Subregions are used to divide a region into sub-categories, such as French or German subregions of a Europe region.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the subregion.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the subregion.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "region",
+              "description": "The region that this subregion is found in.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "servers",
+              "description": "The servers found within this region.",
+              "type": { "name": "ServerPagination", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "ServerPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GuildPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "CharacterPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GuildTag",
+          "kind": "OBJECT",
+          "description": "The tag for a specific guild. Tags can be used to categorize reports within a guild. In the site UI, they are referred to as report tags.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the tag.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "guild",
+              "description": "The guild that the tag belongs to.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the tag.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GuildRank",
+          "kind": "ENUM",
+          "description": "Rank within a guild or team on the website. This is separate from in-game ranks and does NOT correspond to the rank of the user or character in-game.",
+          "fields": null
+        },
+        {
+          "name": "GuildZoneRankings",
+          "kind": "OBJECT",
+          "description": "A guild's rankings within a zone.",
+          "fields": [
+            {
+              "name": "progress",
+              "description": "The progress ranks for the guild. Always uses the highest difficulty.",
+              "type": {
+                "name": "WorldRegionServerRankPositions",
+                "kind": "OBJECT"
+              }
+            },
+            {
+              "name": "speed",
+              "description": "The all-star based speed rank for the guild.",
+              "type": {
+                "name": "WorldRegionServerRankPositions",
+                "kind": "OBJECT"
+              }
+            },
+            {
+              "name": "completeRaidSpeed",
+              "description": "The complete raid speed ranks for the guild. Most non-Classic WoW zones do not support complete raid ranks.",
+              "type": {
+                "name": "WorldRegionServerRankPositions",
+                "kind": "OBJECT"
+              }
+            }
+          ]
+        },
+        {
+          "name": "WorldRegionServerRankPositions",
+          "kind": "OBJECT",
+          "description": "A collection containing some combination of world, region, and server ranks.",
+          "fields": [
+            {
+              "name": "worldRank",
+              "description": null,
+              "type": { "name": "Rank", "kind": "OBJECT" }
+            },
+            {
+              "name": "regionRank",
+              "description": null,
+              "type": { "name": "Rank", "kind": "OBJECT" }
+            },
+            {
+              "name": "serverRank",
+              "description": null,
+              "type": { "name": "Rank", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "Rank",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "number",
+              "description": "The ordinal rank (usually written \"Rank N\"). Rank 1 = highest.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "percentile",
+              "description": "The percentile of the rank as an integer in [0, 100]. Always null for guild ranks.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "color",
+              "description": "The color class used by the site for this rank.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "ReportPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "Report",
+          "kind": "OBJECT",
+          "description": "A single report uploaded by a player to a guild or personal logs.",
+          "fields": [
+            {
+              "name": "code",
+              "description": "The report code, a unique value used to identify the report.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "endTime",
+              "description": "The end time of the report. This is a UNIX timestamp representing the timestamp of the last event contained in the report.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "events",
+              "description": "A set of paginated report events, filterable via arguments like type, source, target, ability, etc. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "ReportEventPaginator", "kind": "OBJECT" }
+            },
+            {
+              "name": "exportedSegments",
+              "description": "The number of exported segments in the report. This is how many segments have been processed for rankings.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "fights",
+              "description": "A set of fights with details about participating players.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "graph",
+              "description": "A graph of information for a report, filterable via arguments like type, source, target, ability, etc. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "guild",
+              "description": "The guild that the report belongs to. If this is null, then the report was uploaded to the user's personal logs.",
+              "type": { "name": "Guild", "kind": "OBJECT" }
+            },
+            {
+              "name": "guildTag",
+              "description": "The guild tag that the report belongs to. If this is null, then the report was not tagged.",
+              "type": { "name": "GuildTag", "kind": "OBJECT" }
+            },
+            {
+              "name": "owner",
+              "description": "The user that uploaded the report.",
+              "type": { "name": "User", "kind": "OBJECT" }
+            },
+            {
+              "name": "masterData",
+              "description": "Data from the report's master file. This includes version info, all of the players, NPCs and pets that occur in the report, and all the game abilities used in the report.",
+              "type": { "name": "ReportMasterData", "kind": "OBJECT" }
+            },
+            {
+              "name": "playerDetails",
+              "description": "A table of information for the players of a report, including their specs, talents, gear, etc. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "rankedCharacters",
+              "description": "A list of all characters that ranked on kills in the report.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "rankings",
+              "description": "Rankings information for a report, filterable to specific fights, bosses, metrics, etc. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "region",
+              "description": "The region of the report.",
+              "type": { "name": "Region", "kind": "OBJECT" }
+            },
+            {
+              "name": "revision",
+              "description": "The revision of the report. This number is increased when reports get re-exported.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "segments",
+              "description": "The number of uploaded segments in the report.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "startTime",
+              "description": "The start time of the report. This is a UNIX timestamp representing the timestamp of the first event contained in the report.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "table",
+              "description": "A table of information for a report, filterable via arguments like type, source, target, ability, etc. This data is not considered frozen, and it can change without notice. Use at your own risk.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "title",
+              "description": "A title for the report.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "visibility",
+              "description": "The visibility level of the report. The possible values are 'public', 'private', and 'unlisted'.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "zone",
+              "description": "The principal zone that the report contains fights for. Null if no supported zone exists.",
+              "type": { "name": "Zone", "kind": "OBJECT" }
+            },
+            {
+              "name": "archiveStatus",
+              "description": "Whether this report has been archived. Events, tables, and graphs for archived reports are inaccessible unless the retrieving user has a subscription including archive access.",
+              "type": { "name": "ReportArchiveStatus", "kind": "OBJECT" }
+            },
+            {
+              "name": "phases",
+              "description": "Phase information for all boss encounters observed in this report. This requires loading fight data, but does not double-charge API points if you load fights and phases.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "EventDataType",
+          "kind": "ENUM",
+          "description": "The type of events or tables to examine.",
+          "fields": null
+        },
+        {
+          "name": "HostilityType",
+          "kind": "ENUM",
+          "description": "Whether or not to fetch information for friendlies or enemies.",
+          "fields": null
+        },
+        {
+          "name": "KillType",
+          "kind": "ENUM",
+          "description": "A filter for kills vs wipes and encounters vs trash.",
+          "fields": null
+        },
+        {
+          "name": "ReportEventPaginator",
+          "kind": "OBJECT",
+          "description": "The ReportEventPaginator represents a paginated list of report events.",
+          "fields": [
+            {
+              "name": "data",
+              "description": "The list of events obtained.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "nextPageTimestamp",
+              "description": "A timestamp to pass in as the start time when fetching the next page of data.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "ReportFight",
+          "kind": "OBJECT",
+          "description": "The ReportFight represents a single fight that occurs in the report.",
+          "fields": [
+            {
+              "name": "averageItemLevel",
+              "description": "The average item level of the players in the fight.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            },
+            {
+              "name": "bossPercentage",
+              "description": "The percentage health of the active boss or bosses at the end of a fight.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            },
+            {
+              "name": "boundingBox",
+              "description": "The bounding box that encloses the positions of all players/enemies in the fight.",
+              "type": { "name": "ReportMapBoundingBox", "kind": "OBJECT" }
+            },
+            {
+              "name": "classicSeasonID",
+              "description": "The season ID of a Classic fight. Will only be nonzero for Season of Mastery in Vanilla for now.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "completeRaid",
+              "description": "Whether or not a fight represents an entire raid from start to finish, e.g., in Classic WoW a complete run of Blackwing Lair.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "difficulty",
+              "description": "The difficulty setting for the raid, dungeon, or arena. Null for trash.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "dungeonPulls",
+              "description": "For a dungeon, a list of pulls that occurred in the dungeon. Pulls have details such as the enemies involved in the pull and map info showing where the pull took place.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "encounterID",
+              "description": "The encounter ID of the fight. If the ID is 0, the fight is considered a trash fight.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "endTime",
+              "description": "The end time of the fight. This is a timestamp with millisecond precision that is relative to the start of the report, i.e., the start of the report is considered time 0.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "enemyNPCs",
+              "description": "Information about enemy NPCs involved in the fight. Includes report IDs, instance counts, and instance group counts for each NPC.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "enemyPets",
+              "description": "Information about enemy pets involved in the fight. Includes report IDs, instance counts, and instance group counts for each pet.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "enemyPlayers",
+              "description": "The IDs of all players involved in a fight. These players can be referenced in the master data actors table to get detailed information about each participant.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "fightPercentage",
+              "description": "The actual completion percentage of the fight. This is the field used to indicate how far into a fight a wipe was, since fights can be complicated and have multiple bosses, no bosses, bosses that heal, etc.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            },
+            {
+              "name": "friendlyNPCs",
+              "description": "Information about friendly NPCs involved in the fight. Includes report IDs, instance counts, and instance group counts for each NPC.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "friendlyPets",
+              "description": "Information about friendly pets involved in the fight. Includes report IDs, instance counts, and instance group counts for each pet.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "friendlyPlayers",
+              "description": "The IDs of all players involved in a fight. These players can be referenced in the master data actors table to get detailed information about each participant.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "gameZone",
+              "description": "The game zone the fight takes place in. This should not be confused with the zones used by the sites for rankings. This is the actual in-game zone info.",
+              "type": { "name": "GameZone", "kind": "OBJECT" }
+            },
+            {
+              "name": "hardModeLevel",
+              "description": "The hard mode level of the fight. Most fights don't support optional hard modes. This only applies to bosses like Sartharion.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "id",
+              "description": "The report ID of the fight. This ID can be used to fetch only events, tables or graphs for this fight.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "inProgress",
+              "description": "Whether or not the fight is still in progress. If this field is false, it means the entire fight has been uploaded.",
+              "type": { "name": "Boolean", "kind": "SCALAR" }
+            },
+            {
+              "name": "keystoneAffixes",
+              "description": "The affixes for a Mythic+ dungeon.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "keystoneBonus",
+              "description": "The bonus field represents Bronze, Silver or Gold in Challenge Modes, or +1-+3 pushing of Mythic+ keys. It has the values 1, 2, and 3.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "keystoneLevel",
+              "description": "The keystone level for a Mythic+ dungeon.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "keystoneTime",
+              "description": "The completion time for a Challenge Mode or Mythic+ Dungeon. This is the official time used on Blizzard leaderboards.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "kill",
+              "description": "Whether or not the fight was a boss kill, i.e., successful. If this field is false, it means the fight was a wipe or a failed run, etc..",
+              "type": { "name": "Boolean", "kind": "SCALAR" }
+            },
+            {
+              "name": "lastPhase",
+              "description": "The phase that the encounter was in when the fight ended. Counts up from 1 based off the phase type (i.e., normal phase vs intermission).",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "lastPhaseAsAbsoluteIndex",
+              "description": "The phase that the encounter was in when the fight ended. Always increases from 0, so a fight with three real phases and two intermissions would count up from 0 to 4.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "lastPhaseIsIntermission",
+              "description": "Whether or not the phase that the encounter was in when the fight ended was an intermission or not.",
+              "type": { "name": "Boolean", "kind": "SCALAR" }
+            },
+            {
+              "name": "layer",
+              "description": "The layer of a Torghast run.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "maps",
+              "description": "All the maps that were involved in a fight. For single bosses this will usually be a single map, but for dungeons it will typically be multiple maps.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the fight.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "originalEncounterID",
+              "description": "Some boss fights may be converted to trash fights (encounterID = 0). When this occurs, `originalEncounterID` contains the original ID of the encounter.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "phaseTransitions",
+              "description": "List of observed phase transitions during the fight.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "rating",
+              "description": "The official Blizzard rating for a completed Mythic+ dungeon or Torghast run.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            },
+            {
+              "name": "size",
+              "description": "The group size for the raid, dungeon, or arena. Null for trash.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "startTime",
+              "description": "The start time of the fight. This is a timestamp with millisecond precision that is relative to the start of the report, i.e., the start of the report is considered time 0.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "talentImportCode",
+              "description": "The import/export code for a Retail Dragonflight talent build. Will be null for a classic or pre-Dragonflight fight.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "wipeCalledTime",
+              "description": "If a wipe was explicitly called using the Companion app, then this field will contain the time. This is a timestamp with millisecond precision that is relative to the start of the report, i.e., the start of the report is considered time 0.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "ReportMapBoundingBox",
+          "kind": "OBJECT",
+          "description": "The ReportMapBoundingBox is a box that encloses the positions of all players and enemies in a fight or dungeon pull.",
+          "fields": [
+            {
+              "name": "minX",
+              "description": "The smallest X position.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "maxX",
+              "description": "The largest X position.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "minY",
+              "description": "The smallest Y position.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "maxY",
+              "description": "The largest Y position.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "ReportDungeonPull",
+          "kind": "OBJECT",
+          "description": "The ReportDungeonPull represents a single pull that occurs in a containing dungeon.",
+          "fields": [
+            {
+              "name": "boundingBox",
+              "description": "The bounding box that encloses the positions of all players/enemies in the fight.",
+              "type": { "name": "ReportMapBoundingBox", "kind": "OBJECT" }
+            },
+            {
+              "name": "encounterID",
+              "description": "The encounter ID of the fight. If the ID is 0, the fight is considered a trash fight.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "endTime",
+              "description": "The end time of the fight. This is a timestamp with millisecond precision that is relative to the start of the report, i.e., the start of the report is considered time 0.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "enemyNPCs",
+              "description": "Information about enemies involved in the fight. Includes report IDs, instance counts, and instance group counts for each NPC.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "id",
+              "description": "The report ID of the fight. This ID can be used to fetch only events, tables or graphs for this fight.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "kill",
+              "description": "Whether or not the fight was a boss kill, i.e., successful. If this field is false, it means the fight was an incomplete run, etc..",
+              "type": { "name": "Boolean", "kind": "SCALAR" }
+            },
+            {
+              "name": "maps",
+              "description": "All the maps that were involved in a pull.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the fight.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "startTime",
+              "description": "The start time of the fight. This is a timestamp with millisecond precision that is relative to the start of the report, i.e., the start of the report is considered time 0.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "x",
+              "description": "The x position of the first mob damaged in the pull at the time this damage happens. Used to establish a marker position to represent where the pull took place.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "y",
+              "description": "The y position of the first mob damaged in the pull at the time this damage happens. Used to establish a marker position to represent where the pull took place.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "ReportDungeonPullNPC",
+          "kind": "OBJECT",
+          "description": "The ReportDungeonPullNPC represents participation info within a single dungeon pull for an NPC.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The report ID of the actor. This ID is used in events to identify sources and targets.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "gameID",
+              "description": "The game ID of the actor, e.g., so it can be looked up on external Web sites.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "minimumInstanceID",
+              "description": "The lowest instance ID seen during the pull.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "maximumInstanceID",
+              "description": "The highest instance ID seen during the pull.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "minimumInstanceGroupID",
+              "description": "The lowest instance group ID seen during the pull.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "maximumInstanceGroupID",
+              "description": "The highest instance group ID seen during the pull.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "ReportMap",
+          "kind": "OBJECT",
+          "description": "The ReportMap represents a single map that a fight can occur on.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The map's game ID.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "ReportFightNPC",
+          "kind": "OBJECT",
+          "description": "The ReportFightNPC represents participation info within a single fight for an NPC.",
+          "fields": [
+            {
+              "name": "gameID",
+              "description": "The game ID of the actor. This ID is used in events to identify sources and targets.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "id",
+              "description": "The report ID of the actor. This ID is used in events to identify sources and targets.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "instanceCount",
+              "description": "How many instances of the NPC were seen during the fight.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "groupCount",
+              "description": "How many packs of the NPC were seen during the fight.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "petOwner",
+              "description": "The report ID of the actor that owns this NPC (if it is a pet). This ID is used in events to identify sources and targets.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameZone",
+          "kind": "OBJECT",
+          "description": "A single zone for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the zone.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the zone. Will be null if no localization information exists for the zone.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "PhaseTransition",
+          "kind": "OBJECT",
+          "description": "A spartan representation of phase transitions during a fight.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The 1-indexed id of the phase. Phase IDs are absolute within a fight: phases with the same ID correspond to the same semantic phase.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "startTime",
+              "description": "The report-relative timestamp of the transition into the phase. The phase ends at the beginning of the next phase, or at the end of the fight.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GraphDataType",
+          "kind": "ENUM",
+          "description": "The type of graph to examine.",
+          "fields": null
+        },
+        {
+          "name": "ViewType",
+          "kind": "ENUM",
+          "description": "Whether the view is by source, target, or ability.",
+          "fields": null
+        },
+        {
+          "name": "User",
+          "kind": "OBJECT",
+          "description": "A single user of the site. Most fields can only be accessed when authenticated as that user with the \"view-user-profile\" scope.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the user.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the user.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "guilds",
+              "description": "The list of guilds to which the user belongs. Only accessible via user authentication when you have the \"view-user-profile\" scope.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "characters",
+              "description": "The characters claimed by this user. Only accessible via user authentication when you have the \"view-user-profile\" scope.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "battleTag",
+              "description": "The battle tag of the user if they have linked it.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "ReportMasterData",
+          "kind": "OBJECT",
+          "description": "The ReporMastertData object contains information about the log version of a report, as well as the actors and abilities used in the report.",
+          "fields": [
+            {
+              "name": "logVersion",
+              "description": "The version of the client parser that was used to parse and upload this log file.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "gameVersion",
+              "description": "The version of the game that generated the log file. Used to distinguish Classic and Retail Warcraft primarily.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "lang",
+              "description": "The auto-detected locale of the report. This is the source language of the original log file.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "abilities",
+              "description": "A list of every ability that occurs in the report.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "actors",
+              "description": "A list of every actor (player, NPC, pet) that occurs in the report.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "ReportAbility",
+          "kind": "OBJECT",
+          "description": "The ReportAbility represents a single ability that occurs in the report.",
+          "fields": [
+            {
+              "name": "gameID",
+              "description": "The game ID of the ability.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            },
+            {
+              "name": "icon",
+              "description": "An icon to use for the ability.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the actor.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "type",
+              "description": "The type of the ability. This represents the type of damage (e.g., the spell school in WoW).",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "ReportActor",
+          "kind": "OBJECT",
+          "description": "The ReportActor represents a single player, pet or NPC that occurs in the report.",
+          "fields": [
+            {
+              "name": "gameID",
+              "description": "The game ID of the actor.",
+              "type": { "name": "Float", "kind": "SCALAR" }
+            },
+            {
+              "name": "icon",
+              "description": "An icon to use for the actor. For pets and NPCs, this will be the icon the site chose to represent that actor.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "id",
+              "description": "The report ID of the actor. This ID is used in events to identify sources and targets.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "name",
+              "description": "The name of the actor.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "petOwner",
+              "description": "The report ID of the actor's owner if the actor is a pet.",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "server",
+              "description": "The normalized server name of the actor.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "subType",
+              "description": "The sub-type of the actor, for players it's their class, and for NPCs, they are further subdivided into normal NPCs and bosses.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "type",
+              "description": "The type of the actor, i.e., if it is a player, pet or NPC.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "ReportRankingMetricType",
+          "kind": "ENUM",
+          "description": "All the possible metrics.",
+          "fields": null
+        },
+        {
+          "name": "TableDataType",
+          "kind": "ENUM",
+          "description": "The type of table to examine.",
+          "fields": null
+        },
+        {
+          "name": "ReportArchiveStatus",
+          "kind": "OBJECT",
+          "description": "The archival status of a report.",
+          "fields": [
+            {
+              "name": "isArchived",
+              "description": "Whether the report has been archived.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "isAccessible",
+              "description": "Whether the current user can access the report. Always true if the report is not archived, and always false if not using user authentication.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "archiveDate",
+              "description": "The date on which the report was archived (if it has been archived).",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "EncounterPhases",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "encounterID",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "separatesWipes",
+              "description": "Whether the phases can be used to separate wipes in the report UI.",
+              "type": { "name": "Boolean", "kind": "SCALAR" }
+            },
+            {
+              "name": "phases",
+              "description": "Phase metadata for all phases in this encounter.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "PhaseMetadata",
+          "kind": "OBJECT",
+          "description": "Information about a phase from a boss encounter.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "Phase ID. 1-indexed",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "isIntermission",
+              "description": "Whether this phase represents an intermission.",
+              "type": { "name": "Boolean", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameData",
+          "kind": "OBJECT",
+          "description": "The game object contains collections of data such as NPCs, classes, abilities, items, maps, etc. Game data only changes when major game patches are released, so you should cache results for as long as possible and only update when new content is released for the game.",
+          "fields": [
+            {
+              "name": "abilities",
+              "description": "The player and enemy abilities for the game.",
+              "type": { "name": "GameAbilityPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "ability",
+              "description": "Obtain a single ability for the game.",
+              "type": { "name": "GameAbility", "kind": "OBJECT" }
+            },
+            {
+              "name": "achievement",
+              "description": "Obtain a single achievement for the game.",
+              "type": { "name": "GameAchievement", "kind": "OBJECT" }
+            },
+            {
+              "name": "achievements",
+              "description": "Achievements for the game.",
+              "type": { "name": "GameAchievementPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "affix",
+              "description": "Obtain a single affix for the game.",
+              "type": { "name": "GameAffix", "kind": "OBJECT" }
+            },
+            {
+              "name": "affixes",
+              "description": "The affixes for the game.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "class",
+              "description": "Obtain a single class for the game.",
+              "type": { "name": "GameClass", "kind": "OBJECT" }
+            },
+            {
+              "name": "classes",
+              "description": "Obtain the supported classes for the game.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "enchant",
+              "description": "Obtain a single enchant for the game.",
+              "type": { "name": "GameEnchant", "kind": "OBJECT" }
+            },
+            {
+              "name": "enchants",
+              "description": "Enchants for the game.",
+              "type": { "name": "GameEnchantPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "factions",
+              "description": "Obtain all the factions that guilds and players can belong to.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "item",
+              "description": "Obtain a single item for the game.",
+              "type": { "name": "GameItem", "kind": "OBJECT" }
+            },
+            {
+              "name": "item_set",
+              "description": "Obtain a single item set for the game.",
+              "type": { "name": "GameItemSet", "kind": "OBJECT" }
+            },
+            {
+              "name": "item_sets",
+              "description": "Item sets for the game.",
+              "type": { "name": "GameItemSetPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "items",
+              "description": "Items for the game.",
+              "type": { "name": "GameItemPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "map",
+              "description": "Obtain a single map for the game.",
+              "type": { "name": "GameMap", "kind": "OBJECT" }
+            },
+            {
+              "name": "maps",
+              "description": "Maps for the game.",
+              "type": { "name": "GameMapPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "npc",
+              "description": "Obtain a single NPC for the game.",
+              "type": { "name": "GameNPC", "kind": "OBJECT" }
+            },
+            {
+              "name": "npcs",
+              "description": "NPCs for the game.",
+              "type": { "name": "GameNPCPagination", "kind": "OBJECT" }
+            },
+            {
+              "name": "zone",
+              "description": "Obtain a single zone for the game, not to be confused with the worldData zones for ranking bosses and dungeons.",
+              "type": { "name": "GameZone", "kind": "OBJECT" }
+            },
+            {
+              "name": "zones",
+              "description": "Zones for the game.",
+              "type": { "name": "GameZonePagination", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "GameAbilityPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameAbility",
+          "kind": "OBJECT",
+          "description": "A single ability for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the ability.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "icon",
+              "description": "The icon for the ability.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the ability. Will be null if no localization information exists for the ability.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameAchievement",
+          "kind": "OBJECT",
+          "description": "A single achievement for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the achievement.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "icon",
+              "description": "The icon for the achievement.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the achievement. Will be null if no localization information exists for the achievement.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameAchievementPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameAffix",
+          "kind": "OBJECT",
+          "description": "A single affix for Mythic Keystone dungeons.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the affix.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "icon",
+              "description": "The icon for the affix.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the affix. Will be null if no localization information exists for the affix.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameClass",
+          "kind": "OBJECT",
+          "description": "A single player class for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "An integer used to identify the class.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the class.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "slug",
+              "description": "A slug used to identify the class.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "specs",
+              "description": "The specs supported by the class.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "GameSpec",
+          "kind": "OBJECT",
+          "description": "A spec for a given player class.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "An integer used to identify the spec.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "class",
+              "description": "The player class that the spec belongs to.",
+              "type": { "name": "GameClass", "kind": "OBJECT" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the class.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "slug",
+              "description": "A slug used to identify the spec.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameEnchant",
+          "kind": "OBJECT",
+          "description": "A single enchant for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the enchant.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the enchant. Will be null if no localization information exists for the enchant.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameEnchantPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameItem",
+          "kind": "OBJECT",
+          "description": "A single item for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the item.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "icon",
+              "description": "The icon for the item.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the item. Will be null if no localization information exists for the item.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameItemSet",
+          "kind": "OBJECT",
+          "description": "A single item set for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the item set.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the item set. Will be null if no localization information exists for the item set.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameItemSetPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameItemPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameMap",
+          "kind": "OBJECT",
+          "description": "A single map for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the map.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the map. Will be null if no localization information exists for the map.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameMapPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameNPC",
+          "kind": "OBJECT",
+          "description": "A single NPC for the game.",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The ID of the NPC.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": "The localized name of the NPC. Will be null if no localization information exists for the NPC.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "GameNPCPagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GameZonePagination",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "data",
+              "description": "List of items on the current page",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "total",
+              "description": "Number of total items selected by the query",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "per_page",
+              "description": "Number of items returned per page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "current_page",
+              "description": "Current page of the cursor",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "from",
+              "description": "Number of the first item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "to",
+              "description": "Number of the last item returned",
+              "type": { "name": "Int", "kind": "SCALAR" }
+            },
+            {
+              "name": "last_page",
+              "description": "The last page (number of pages)",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "has_more_pages",
+              "description": "Determines if cursor has more pages after the current page",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "GuildData",
+          "kind": "OBJECT",
+          "description": "The GuildData object enables the retrieval of single guilds or filtered collections of guilds.",
+          "fields": [
+            {
+              "name": "guild",
+              "description": "Obtain a specific guild either by id or by name/serverSlug/serverRegion.",
+              "type": { "name": "Guild", "kind": "OBJECT" }
+            },
+            {
+              "name": "guilds",
+              "description": "The set of all guilds supported by the site. Can be optionally filtered to a specific server id.",
+              "type": { "name": "GuildPagination", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "ProgressRaceData",
+          "kind": "OBJECT",
+          "description": "A way to obtain data for the top guilds involved in an ongoing world first or realm first progress race.",
+          "fields": [
+            {
+              "name": "progressRace",
+              "description": "Progress race information including best percentages, pull counts and streams for top guilds. This API is only active when there is an ongoing race. The format of this JSON may change without notice and is not considered frozen.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "detailedComposition",
+              "description": "Detailed composition data for a given guild and encounter.",
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "RateLimitData",
+          "kind": "OBJECT",
+          "description": "A way to obtain your current rate limit usage.",
+          "fields": [
+            {
+              "name": "limitPerHour",
+              "description": "The total amount of points this API key can spend per hour.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "pointsSpentThisHour",
+              "description": "The total amount of points spent during this hour.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "pointsResetIn",
+              "description": "The number of seconds remaining until the points reset.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "ReportData",
+          "kind": "OBJECT",
+          "description": "The ReportData object enables the retrieval of single reports or filtered collections of reports.",
+          "fields": [
+            {
+              "name": "report",
+              "description": "Obtain a specific report by its code.",
+              "type": { "name": "Report", "kind": "OBJECT" }
+            },
+            {
+              "name": "reports",
+              "description": "A set of reports for a specific guild, guild tag, or user.",
+              "type": { "name": "ReportPagination", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "UserData",
+          "kind": "OBJECT",
+          "description": "The user data object contains basic information about users and lets you retrieve specific users (or the current user if using the user endpoint).",
+          "fields": [
+            {
+              "name": "user",
+              "description": "Obtain a specific user by id.",
+              "type": { "name": "User", "kind": "OBJECT" }
+            },
+            {
+              "name": "currentUser",
+              "description": "Obtain the current user (only works with user endpoint).",
+              "type": { "name": "User", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "WorldData",
+          "kind": "OBJECT",
+          "description": "The world data object contains collections of data such as expansions, zones, encounters, regions, subregions, etc.",
+          "fields": [
+            {
+              "name": "encounter",
+              "description": "Obtain a specific encounter by id.",
+              "type": { "name": "Encounter", "kind": "OBJECT" }
+            },
+            {
+              "name": "expansion",
+              "description": "A single expansion obtained by ID.",
+              "type": { "name": "Expansion", "kind": "OBJECT" }
+            },
+            {
+              "name": "expansions",
+              "description": "The set of all expansions supported by the site.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "region",
+              "description": "Obtain a specific region by its ID.",
+              "type": { "name": "Region", "kind": "OBJECT" }
+            },
+            {
+              "name": "regions",
+              "description": "The set of all regions supported by the site.",
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "server",
+              "description": "Obtain a specific server either by id or by slug and region.",
+              "type": { "name": "Server", "kind": "OBJECT" }
+            },
+            {
+              "name": "subregion",
+              "description": "Obtain a specific subregion by its ID.",
+              "type": { "name": "Subregion", "kind": "OBJECT" }
+            },
+            {
+              "name": "zone",
+              "description": "Obtain a specific zone by its ID.",
+              "type": { "name": "Zone", "kind": "OBJECT" }
+            },
+            {
+              "name": "zones",
+              "description": "Obtain a set of all zones supported by the site.",
+              "type": { "name": null, "kind": "LIST" }
+            }
+          ]
+        },
+        {
+          "name": "ID",
+          "kind": "SCALAR",
+          "description": "The `ID` scalar type represents a unique identifier, often used to\nrefetch an object or as key for a cache. The ID type appears in a JSON\nresponse as a String; however, it is not intended to be human-readable.\nWhen expected as an input type, any string (such as `\"4\"`) or integer\n(such as `4`) input value will be accepted as an ID.",
+          "fields": null
+        },
+        {
+          "name": "__Schema",
+          "kind": "OBJECT",
+          "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+          "fields": [
+            {
+              "name": "types",
+              "description": "A list of all types supported by this server.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "queryType",
+              "description": "The type that query operations will be rooted at.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "mutationType",
+              "description": "If this server supports mutation, the type that mutation operations will be rooted at.",
+              "type": { "name": "__Type", "kind": "OBJECT" }
+            },
+            {
+              "name": "subscriptionType",
+              "description": "If this server support subscription, the type that subscription operations will be rooted at.",
+              "type": { "name": "__Type", "kind": "OBJECT" }
+            },
+            {
+              "name": "directives",
+              "description": "A list of all directives supported by this server.",
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "__Type",
+          "kind": "OBJECT",
+          "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+          "fields": [
+            {
+              "name": "kind",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "name",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "fields",
+              "description": null,
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "interfaces",
+              "description": null,
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "possibleTypes",
+              "description": null,
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "enumValues",
+              "description": null,
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "inputFields",
+              "description": null,
+              "type": { "name": null, "kind": "LIST" }
+            },
+            {
+              "name": "ofType",
+              "description": null,
+              "type": { "name": "__Type", "kind": "OBJECT" }
+            }
+          ]
+        },
+        {
+          "name": "__TypeKind",
+          "kind": "ENUM",
+          "description": "An enum describing what kind of type a given `__Type` is.",
+          "fields": null
+        },
+        {
+          "name": "__Field",
+          "kind": "OBJECT",
+          "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "args",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "isDeprecated",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "deprecationReason",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "__InputValue",
+          "kind": "OBJECT",
+          "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "defaultValue",
+              "description": "A GraphQL-formatted string representing the default value for this input value.",
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "__EnumValue",
+          "kind": "OBJECT",
+          "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "isDeprecated",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "deprecationReason",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "__Directive",
+          "kind": "OBJECT",
+          "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": { "name": "String", "kind": "SCALAR" }
+            },
+            {
+              "name": "args",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "isRepeatable",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            },
+            {
+              "name": "locations",
+              "description": null,
+              "type": { "name": null, "kind": "NON_NULL" }
+            }
+          ]
+        },
+        {
+          "name": "__DirectiveLocation",
+          "kind": "ENUM",
+          "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+          "fields": null
+        },
+        {
+          "name": "ArchonViewModels",
+          "kind": "OBJECT",
+          "description": null,
+          "fields": [
+            {
+              "name": "user",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "googleAnalytics",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "game",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "translations",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "header",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "headerTitle",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "footer",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "indexPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "signInPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "signOutPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "authErrorPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "accountPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "gamePage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "contactPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "privacyPolicyPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "aboutPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "announcementPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "gameSlugs",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "buildsZonePageSlugs",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "buildsZonePage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "buildsSpecPageSlugs",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "buildsSpecPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "buildsClassesAndSpecsPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "ability",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "articleCategory",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "articleCategories",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "articleSlugs",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "article",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "cmsNavigation",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "pageOfArticlePreviews",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "snippets",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "articleIndexPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "playwireAds",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "adPlacements",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "reportPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "fightPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "characterPage",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            },
+            {
+              "name": "characterPageData",
+              "description": null,
+              "type": { "name": "JSON", "kind": "SCALAR" }
+            }
+          ]
+        },
+        {
+          "name": "SubscriptionStatus",
+          "kind": "ENUM",
+          "description": "The type of Subscription.",
+          "fields": null
+        }
+      ]
+    }
+  }
+}

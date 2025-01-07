@@ -1,0 +1,27 @@
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./logvis-frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./logvis-frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./logvis-backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./logvis-backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development

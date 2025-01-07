@@ -1,0 +1,29 @@
+name: Trigger Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get commit info
+        run: |
+          echo "COMMIT_MSG=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git log -1 --pretty=%h)" >> $GITHUB_ENV
+
+      - name: Trigger deployment
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          repository: jakubs-01/logvis-deploy
+          event-type: frontend-push
+          client-payload: |
+            {
+              "repository": "frontend",
+              "commit": "${{ env.COMMIT_HASH }}",
+              "author": "${{ env.COMMIT_AUTHOR }}",
+              "message": "${{ env.COMMIT_MSG }}"
+            }

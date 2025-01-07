@@ -1,0 +1,26 @@
+version: "3"
+services:
+  nginx-proxy-manager:
+    image: "jc21/nginx-proxy-manager:latest"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81" # Admin UI
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+  frontend:
+    build: ./logvis-frontend
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=logvis.jakubapp.dev
+    depends_on:
+      - backend
+
+  backend:
+    build: ./logvis-backend
+    expose:
+      - "5000"

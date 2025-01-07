@@ -1,0 +1,2 @@
+2024/12/24 22:56:47 [error] 2751#2751: *1 rewrite or internal redirection cycle while internally redirecting to "/index.html", client: 45.13.6.232, server: 188.245.163.201, request: "GET /favicon.ico HTTP/1.1", host: "188.245.163.201", referrer: "http://188.245.163.201/"
+2024/12/24 22:57:48 [error] 2750#2750: *2 rewrite or internal redirection cycle while internally redirecting to "/index.html", client: 45.13.6.232, server: 188.245.163.201, request: "GET /favicon.ico HTTP/1.1", host: "188.245.163.201", referrer: "http://188.245.163.201/"

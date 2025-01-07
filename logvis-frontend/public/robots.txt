@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /analyze
+Disallow: /api/
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://logvis.jakubapp.dev/sitemap.xml

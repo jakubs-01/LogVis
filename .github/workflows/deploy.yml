@@ -1,0 +1,74 @@
+name: Deploy
+
+on:
+  repository_dispatch:
+    types:
+      - frontend-push
+      - backend-push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "🚀 Deployment Started"
+          description: "Triggered by ${{ github.event.client_payload.repository }} update"
+          color: 0xffff00
+
+      - name: Deploy to Server
+        id: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 5847
+          script: |
+            set -e
+            echo "Starting deployment..."
+
+            # Navigate to project directory
+            cd /home/jakubapp-dev/logvis-repo
+
+            # Update frontend
+            cd logvis-frontend
+            git pull origin main
+
+            # Update backend
+            cd ../logvis-backend
+            git pull origin main
+
+            # Return to root and rebuild
+            cd ..
+            docker-compose down
+            docker-compose up -d --build
+
+            # Cleanup
+            docker image prune -f
+
+      - name: Success Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: success()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "✅ Deployment Successful"
+          description: |
+            Successfully deployed changes from ${{ github.event.client_payload.repository }}!
+            Commit: ${{ github.event.client_payload.commit }}
+            Author: ${{ github.event.client_payload.author }}
+          color: 0x00ff00
+
+      - name: Failure Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: failure()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "❌ Deployment Failed"
+          description: |
+            Failed to deploy changes from ${{ github.event.client_payload.repository }}
+            [View Logs](https://github.com/jakubs-01/logvis-deploy/actions/runs/${{ github.run_id }})
+          color: 0xff0000

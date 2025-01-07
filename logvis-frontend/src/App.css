@@ -1,0 +1,12 @@
+.tooltip a {
+  color: #ffd100; /* Green links */
+  text-decoration: none;
+}
+
+.tooltip a:hover {
+  text-decoration: underline;
+}
+
+.tooltip a:visited {
+  color: #ffd100; /* Match unvisited link color */
+}
