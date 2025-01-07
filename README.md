@@ -6,10 +6,8 @@ LogVis is a web application designed to analyze and visualize World of Warcraft 
 
 - 🔐 **Private Logs Access**: Authenticate with your Warcraft Logs account to analyze private reports
 - 🗺️ **Interactive Maps**: Visualize raid mechanics and positioning with detailed encounter maps
-- 📊 **Ability Timeline**: Track boss ability usage and important events throughout fights
 - 📱 **Responsive Design**: Full support for desktop and mobile devices
 - 🔄 **Real-time Updates**: Live data synchronization during ongoing encounters
-- 🎨 **Dark Mode**: Eye-friendly dark theme optimized for gamers
 
 ## Architecture
 
@@ -75,10 +73,21 @@ CLIENT_SECRET=your_warcraft_logs_client_secret
 ENDPOINT_URL=https://www.warcraftlogs.com/api/v2/client
 ENDPOINT_AUTH_URL=https://www.warcraftlogs.com/oauth/token
 USER_AUTH_CALLBACK_ENDPOINT=http://localhost:5000/callback
-plaintext
-REACT_APP_API_URL=http://localhost:5000
-REACT_APP_TITLE_AND_AUTHOR_API_URL=/api/titleandauthor
-REACT_APP_FIGHTS_API_URL=/api/fights
+```
+
+```bash
+REACT_APP_ORIGIN_URL=http://localhost:3000/
+REACT_APP_DAMAGE_EVENTS_API_URL=http://localhost:5000/api/damageevents
+REACT_APP_DEBUFF_EVENTS_API_URL=http://localhost:5000/api/debuffevents
+REACT_APP_ABILITY_VISIBILITY_API_URL=http://localhost:5000/api/abilityvisibility
+REACT_APP_TITLE_AND_AUTHOR_API_URL=http://localhost:5000/api/titleandauthor
+REACT_APP_FIGHTS_API_URL=http://localhost:5000/api/fights
+REACT_APP_USER_DATA_API_URL=http://localhost:5000/auth/user
+REACT_APP_USER_LOGOUT_ENDPOINT=http://localhost:5000/auth/logout
+REACT_APP_USER_LOGIN_ENDPOINT=http://localhost:5000/auth/login
+REACT_APP_LOGS_API_URL=http://localhost:5000/admin/logs
+REACT_APP_QUERY_LOGS_API_URL=http://localhost:5000/admin/querylogs
+REACT_APP_IPINFO_API_URL=http://localhost:5000/admin/ipinfo
 ```
 
 ## Development
