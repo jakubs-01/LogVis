@@ -1,22 +1,29 @@
-name: Deploy
+name: deploy
 
 on:
-  repository_dispatch:
-    types:
-      - frontend-push
-      - backend-push
+  push:
+    branches: [main]
 
 jobs:
-  deploy:
+  trigger:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get commit info
+        run: |
+          echo "COMMIT_MSG=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git log -1 --pretty=%h)" >> $GITHUB_ENV
+
       - name: Start Discord Notification
         uses: sarisia/actions-status-discord@v1
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "🚀 Deployment Started"
-          description: "Triggered by ${{ github.event.client_payload.repository }} update"
+          description: "Starting deployment process"
           color: 0xffff00
 
       - name: Deploy to Server
@@ -32,7 +39,7 @@ jobs:
             echo "Starting deployment..."
 
             # Navigate to project directory
-            cd /home/jakubapp-dev/logvis-repo
+            cd /home/jakubapp-dev/logvis
 
             # Update frontend
             cd logvis-frontend
@@ -57,9 +64,9 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "✅ Deployment Successful"
           description: |
-            Successfully deployed changes from ${{ github.event.client_payload.repository }}!
-            Commit: ${{ github.event.client_payload.commit }}
-            Author: ${{ github.event.client_payload.author }}
+            Successfully deployed changes!
+            Commit: ${{ env.COMMIT_HASH }}
+            Author: ${{ env.COMMIT_AUTHOR }}
           color: 0x00ff00
 
       - name: Failure Discord Notification
@@ -69,6 +76,6 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "❌ Deployment Failed"
           description: |
-            Failed to deploy changes from ${{ github.event.client_payload.repository }}
-            [View Logs](https://github.com/jakubs-01/logvis-deploy/actions/runs/${{ github.run_id }})
+            Failed to deploy changes
+            [View Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           color: 0xff0000
