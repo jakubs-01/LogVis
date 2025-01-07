@@ -4,14 +4,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import GameMap from "./GameMap/GameMap";
 import LoadingOverlay from "./LoadingOverlay";
+import TimeLineVisualization from "./TimeLineVisualization";
 
 const MechanicVisualization = ({ reportCode, fight }) => {
-  const [mechanicData, setMechanicData] = useState({});
+  const [mechanicData, setMechanicData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchMechanicData = async () => {
       setIsLoading(true);
+      // Clear existing data when starting a new fetch
+      setMechanicData(null);
+
       try {
         const [damageResponse, debuffResponse] = await Promise.all([
           axios.get(process.env.REACT_APP_DAMAGE_EVENTS_API_URL, {
@@ -35,6 +39,7 @@ const MechanicVisualization = ({ reportCode, fight }) => {
         // Assuming both responses have a similar structure, e.g., `response.data` contains the data array
         const mergedData = [...damageResponse.data, ...debuffResponse.data];
         setMechanicData(mergedData);
+        console.log(mergedData);
       } catch (error) {
         console.error(error);
       } finally {
@@ -45,20 +50,28 @@ const MechanicVisualization = ({ reportCode, fight }) => {
     if (reportCode) {
       fetchMechanicData();
     }
-  }, [reportCode, fight.id, fight.name]);
+  }, [reportCode, fight]);
 
   // Visualization Logic
   return (
     <div>
       <div style={{ position: "relative", width: "1002px", height: "668px" }}>
-        <GameMap
-          coordinates={mechanicData}
-          bossName={fight.name}
-          fightStartTime={fight.startTime}
-          fightID={fight.id}
-          reportCode={reportCode}
-        />
-        {isLoading && (
+        {!isLoading && mechanicData && mechanicData.length > 0 ? (
+          <>
+            <GameMap
+              coordinates={mechanicData}
+              bossName={fight.name}
+              fightStartTime={fight.startTime}
+              fightID={fight.id}
+              reportCode={reportCode}
+            />
+            {/* <TimeLineVisualization
+              events={mechanicData}
+              bossName={fight.name}
+              fightStartTime={fight.startTime}
+            /> */}
+          </>
+        ) : (
           <LoadingOverlay
             message="Loading fight data..."
             width={1002}

@@ -1,16 +1,23 @@
+# docker-compose.dev.yml
 version: "3"
 services:
   frontend:
     build:
-      context: ./logvis-frontend
+      context: ./logvis-frontend # Make sure this matches your monorepo structure
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     volumes:
-      - ./logvis-frontend:/app
-      - /app/node_modules
+      - type: bind
+        source: ./logvis-frontend
+        target: /app
+      - type: volume
+        source: frontend_node_modules
+        target: /app/node_modules
     environment:
       - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
 
@@ -21,7 +28,15 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./logvis-backend:/app
-      - /app/node_modules
+      - type: bind
+        source: ./logvis-backend
+        target: /app
+      - type: volume
+        source: backend_node_modules
+        target: /app/node_modules
     environment:
       - NODE_ENV=development
+
+volumes:
+  frontend_node_modules:
+  backend_node_modules:
