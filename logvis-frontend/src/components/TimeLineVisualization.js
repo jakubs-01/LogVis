@@ -7,6 +7,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
+import { ClassToColour, ClassToIcon } from "../config/ClassColours";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
@@ -23,22 +24,6 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
   const [abilityIds, setAbilityIds] = useState([]);
   const [groupedEvents, setGroupedEvents] = useState({});
   const [notSorted, setNotSorted] = useState(true);
-  const getClassColor = (playerClass) => {
-    const classColors = {
-      Rogue: "#FFF569",
-      Hunter: "#ABD473",
-      Paladin: "#F58CBA",
-      Warlock: "#9482C9",
-      Druid: "#FF7D0A",
-      Evoker: "#33937F",
-      Mage: "#69CCF0",
-      DemonHunter: "#A330C9",
-      Priest: "#FFFFFF",
-      Warrior: "#C79C6E",
-      Shaman: "#0070DE",
-    };
-    return classColors[playerClass] || "#FFFFFF";
-  };
 
   const formatTimestamp = (timestamp) => {
     const correctTime = timestamp - fightStartTime;
@@ -52,6 +37,18 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
     if (newAbility !== null) {
       setSelectedAbility(newAbility);
     }
+  };
+
+  const replacePlaceHolders = (description, playerName, playerClass) => {
+    if (!description) return "";
+    const parts = description.split("{placeholder}");
+    return (
+      <>
+        {parts[0]}
+        <span style={{ color: ClassToColour(playerClass) }}>{playerName}</span>
+        {parts[1]}
+      </>
+    );
   };
 
   useEffect(() => {
@@ -187,27 +184,66 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>
-                  <Paper elevation={3} sx={{ p: 2 }}>
+                  <Paper
+                    elevation={3}
+                    sx={{
+                      p: 2,
+                      border: "1px solid rgba(0, 0, 0, 0.12)",
+                      borderRadius: 2,
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                      backgroundColor: "background.paper",
+                    }}
+                  >
                     {setEvents.map((event, eventIndex) => (
                       <Box
                         key={eventIndex}
-                        sx={{ mb: eventIndex !== setEvents.length - 1 ? 1 : 0 }}
+                        sx={{
+                          mb: eventIndex !== setEvents.length - 1 ? 2 : 0,
+                          display: "flex",
+                          position: "relative",
+                          flexDirection: "column",
+                          borderBottom:
+                            eventIndex !== setEvents.length - 1
+                              ? "1px solid rgba(0, 0, 0, 0.12)"
+                              : "none",
+                          pb: eventIndex !== setEvents.length - 1 ? 2 : 0,
+                        }}
                       >
-                        <Typography
-                          variant="body1"
+                        <Box
                           sx={{
-                            color: getClassColor(event.playerClass),
-                            fontWeight: "bold",
+                            flexGrow: 1,
+                            position: "relative",
+                            zIndex: 1,
+                            backgroundColor: "#121212",
+                            borderRadius: 1,
+                            p: 1,
                           }}
                         >
-                          {event.playerName} ({event.playerClass})
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          Time: {event.formattedTime}
-                        </Typography>
-                        {eventIndex !== setEvents.length - 1 && (
-                          <Divider sx={{ my: 1 }} />
-                        )}
+                          <Typography
+                            variant="h7"
+                            color="textSecondary"
+                            sx={{
+                              mb: 1,
+                              fontWeight: "medium",
+                            }}
+                          >
+                            {event.formattedTime}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              lineHeight: 1.6,
+                            }}
+                          >
+                            {replacePlaceHolders(
+                              BossRoomMappings.getAbilityDescription(
+                                event.abilityGameID
+                              ),
+                              event.playerName,
+                              event.playerClass
+                            )}
+                          </Typography>
+                        </Box>
                       </Box>
                     ))}
                   </Paper>
