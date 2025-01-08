@@ -101,18 +101,18 @@ const HomePage = () => {
           Getting Started
         </Typography>
         <Typography variant="body1" paragraph>
-          1. Log in with your Warcraft Logs account using the button in the top
-          right
+          (<i>Optional </i>) Log in with your Warcraft Logs account using the
+          button at the top
         </Typography>
         <Typography variant="body1" paragraph>
-          2. Copy a Warcraft Logs report URL (e.g.,
+          1. Copy a Warcraft Logs Report URL (e.g.,
           https://www.warcraftlogs.com/reports/...)
         </Typography>
         <Typography variant="body1" paragraph>
-          3. Paste the URL in the search bar above
+          2. Paste the URL in the Report URL input field
         </Typography>
         <Typography variant="body1">
-          4. Select a fight from the list and start analyzing!
+          3. Select a fight from the list and start analyzing!
         </Typography>
       </Paper>
     </Container>

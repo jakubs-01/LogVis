@@ -9,7 +9,7 @@ const sessionConfig = session({
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === "production",
-    maxAge: 1000 * 60 * 60 * 24, // 24 hours
+    maxAge: 31 * 24 * 60 * 60 * 1000, // 31 days
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     httpOnly: process.env.NODE_ENV === "production" ? true : false,
     domain:
