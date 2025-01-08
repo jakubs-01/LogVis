@@ -103,7 +103,7 @@ const BossRoomMappings = {
     445152: {
       name: "Acolyte's Essence",
       icon: "https://wow.zamimg.com/images/wow/icons/large/inv_cosmicvoid_buff.jpg",
-      description: "Acolyte's Essence was dropped by {placeholder}",
+      description: "Acolyte's Essence dropped by {placeholder}",
     },
   },
 };

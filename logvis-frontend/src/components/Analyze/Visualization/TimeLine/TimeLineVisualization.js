@@ -17,7 +17,12 @@ import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import BossRoomMappings from "../../../../config/bossRoomMappings";
 import { useEffect } from "react";
 
-const TimeLineVisualization = ({ events, fightStartTime }) => {
+const TimeLineVisualization = ({
+  events,
+  fightStartTime,
+  fightID,
+  reportCode,
+}) => {
   const [selectedAbility, setSelectedAbility] = useState(null);
   const [abilityIds, setAbilityIds] = useState([]);
   const [groupedEvents, setGroupedEvents] = useState({});
@@ -95,6 +100,10 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
             ...event,
             formattedTime: formatTimestamp(event.timestamp),
           };
+          const replayUrl = `https://www.warcraftlogs.com/reports/${reportCode}#fight=${fightID}&view=replay&position=${
+            event.timestamp - fightStartTime
+          }`;
+          formattedEvent.replayUrl = replayUrl;
           acc[event.setnumber].push(formattedEvent);
           return acc;
         }, {})
@@ -115,7 +124,7 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: 800,
+        maxWidth: 700, // Reduced from 800
         margin: "auto",
       }}
     >
@@ -125,6 +134,7 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
           exclusive
           onChange={handleAbilityChange}
           aria-label="ability selection"
+          size="small" // Added size small
         >
           {abilityIds.map((abilityId) => (
             <ToggleButton
@@ -134,15 +144,22 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
                 textTransform: "none",
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: 0.5, // Reduced from 1
+                "&.Mui-selected": {
+                  backgroundColor: "rgba(25, 118, 210, 0.12)",
+                  "&:hover": {
+                    backgroundColor: "rgba(25, 118, 210, 0.2)",
+                  },
+                },
               }}
             >
               <img
                 src={BossRoomMappings.getAbilityIcon(abilityId)}
                 alt=""
                 style={{
-                  width: 24,
-                  height: 24,
+                  width: 20, // Reduced from 24
+                  height: 20, // Reduced from 24
+                  filter: "drop-shadow(0 0 2px rgba(0,0,0,0.5))",
                 }}
               />
               {BossRoomMappings.getAbilityName(abilityId)}
@@ -151,12 +168,28 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
         </ToggleButtonGroup>
       </Box>
 
-      <Box sx={{ height: "400px", overflow: "auto" }}>
+      <Box
+        sx={{
+          height: "calc(100vh - 165px)",
+          overflow: "auto",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "rgba(0,0,0,0.1)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "rgba(255,255,255,0.2)",
+            borderRadius: "4px",
+          },
+        }}
+      >
         <Timeline
           position="alternate"
           sx={{
             [`& .MuiTimelineItem-root:before`]: {
-              flex: 0.2,
+              flex: 0.15, // Reduced from 0.2
             },
           }}
         >
@@ -164,22 +197,48 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
             ([setNumber, setEvents], index) => (
               <TimelineItem key={setNumber}>
                 <TimelineOppositeContent>
-                  <Typography variant="h6" color="textSecondary">
-                    {setNumber.toUpperCase()}
+                  <Typography
+                    variant="subtitle1" // Changed from h6
+                    color="textSecondary"
+                    sx={{
+                      fontWeight: 500,
+                      textShadow: "0 0 10px rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    {setEvents[0].formattedTime}
+                    <Typography
+                      component="span"
+                      sx={{
+                        backgroundColor: "primary.main",
+                        color: "white",
+                        px: 0.75, // Reduced from 1
+                        py: 0.25, // Reduced from 0.5
+                        borderRadius: 1,
+                        ml: 0.5, // Reduced from 1
+                        fontSize: "0.75em", // Reduced from 0.8em
+                      }}
+                    >
+                      Set {setNumber.substring(3)}
+                    </Typography>
                   </Typography>
                 </TimelineOppositeContent>
                 <TimelineSeparator>
-                  <TimelineDot color="primary" />
+                  <TimelineDot
+                    sx={{
+                      boxShadow: "0 0 10px rgba(25,118,210,0.5)",
+                      background: "linear-gradient(45deg, #1976d2, #90caf9)",
+                    }}
+                  />
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>
                   <Paper
                     elevation={3}
                     sx={{
-                      p: 2,
-                      border: "1px solid rgba(0, 0, 0, 0.12)",
+                      p: 1.5, // Reduced from 2
+                      border: "1px solid rgba(255,255,255,0.05)",
                       borderRadius: 2,
-                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
                       backgroundColor: "background.paper",
                     }}
                   >
@@ -187,15 +246,15 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
                       <Box
                         key={eventIndex}
                         sx={{
-                          mb: eventIndex !== setEvents.length - 1 ? 2 : 0,
+                          mb: eventIndex !== setEvents.length - 1 ? 1.5 : 0, // Reduced from 2
                           display: "flex",
                           position: "relative",
                           flexDirection: "column",
                           borderBottom:
                             eventIndex !== setEvents.length - 1
-                              ? "1px solid rgba(0, 0, 0, 0.12)"
+                              ? "1px solid rgba(255,255,255,0.05)"
                               : "none",
-                          pb: eventIndex !== setEvents.length - 1 ? 2 : 0,
+                          pb: eventIndex !== setEvents.length - 1 ? 1.5 : 0, // Reduced from 2
                         }}
                       >
                         <Box
@@ -203,35 +262,56 @@ const TimeLineVisualization = ({ events, fightStartTime }) => {
                             flexGrow: 1,
                             position: "relative",
                             zIndex: 1,
-                            backgroundColor: "#121212",
+                            backgroundColor: "rgba(18,18,18,0.95)",
                             borderRadius: 1,
-                            p: 1,
+                            p: 1.25, // Reduced from 1.5
+                            display: "flex",
+                            gap: 1.5, // Reduced from 2
+                            alignItems: "flex-start",
                           }}
                         >
-                          <Typography
-                            variant="h7"
-                            color="textSecondary"
-                            sx={{
-                              mb: 1,
-                              fontWeight: "medium",
+                          <img
+                            src={ClassToIcon(event.playerClass)}
+                            alt={event.playerClass}
+                            style={{
+                              width: 20, // Reduced from 24
+                              height: 20, // Reduced from 24
+                              filter:
+                                "drop-shadow(0 0 3px rgba(255,255,255,0.2))",
                             }}
-                          >
-                            {event.formattedTime}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              lineHeight: 1.6,
-                            }}
-                          >
-                            {replacePlaceHolders(
-                              BossRoomMappings.getAbilityDescription(
-                                event.abilityGameID
-                              ),
-                              event.playerName,
-                              event.playerClass
-                            )}
-                          </Typography>
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              variant="subtitle2"
+                              color="primary"
+                              sx={{
+                                mb: 0.25, // Reduced from 0.5
+                                fontWeight: "medium",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 0.5, // Reduced from 1
+                              }}
+                            >
+                              <a href={event.replayUrl} target="_blank">
+                                {event.formattedTime}
+                              </a>
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                lineHeight: 1.4, // Reduced from 1.6
+                                color: "rgba(255,255,255,0.9)",
+                              }}
+                            >
+                              {replacePlaceHolders(
+                                BossRoomMappings.getAbilityDescription(
+                                  event.abilityGameID
+                                ),
+                                event.playerName,
+                                event.playerClass
+                              )}
+                            </Typography>
+                          </Box>
                         </Box>
                       </Box>
                     ))}
