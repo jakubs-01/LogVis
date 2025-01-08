@@ -1,13 +1,10 @@
-const crypto = require("crypto");
 const axios = require("axios");
-const WarcraftLogsAPIInstance = require("../services/api-service");
+const UserAuthService = require("../services/user-auth-service");
 
 exports.login = (req, res) => {
-  const state = crypto.randomBytes(32).toString("base64url");
+  const state = UserAuthService.generateState();
   req.session.state = state;
-  const clientId = process.env.CLIENT_ID;
-  const redirectUri = `https://www.warcraftlogs.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${process.env.USER_AUTH_CALLBACK_ENDPOINT}&state=${state}`;
-
+  const redirectUri = UserAuthService.generateLoginUrl(state);
   res.redirect(redirectUri);
 };
 
@@ -23,42 +20,13 @@ exports.callback = async (req, res) => {
     return res.status(400).json({ message: "Invalid state" });
   }
 
-  const clientId = process.env.CLIENT_ID;
-  const redirectUri = encodeURIComponent(
-    process.env.USER_AUTH_CALLBACK_ENDPOINT
-  );
-
+  const redirectUri = process.env.USER_AUTH_CALLBACK_ENDPOINT;
   try {
-    const auth = Buffer.from(
-      `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
-    ).toString("base64");
-    const response = await axios.post(
-      "https://www.warcraftlogs.com/oauth/token",
-      {
-        grant_type: "authorization_code",
-        code: code,
-        redirect_uri: decodeURIComponent(redirectUri),
-        client_id: clientId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${auth}`,
-          Accept: "application/json",
-        },
-      }
-    );
-
-    const { access_token, refresh_token } = response.data;
-    if (access_token) {
-      const userName = await WarcraftLogsAPIInstance.fetchAuthUserName(
-        access_token
-      );
-      const data = userName.data.userData.currentUser.name;
-      req.session.userName = data;
-      req.session.accessToken = access_token;
-      req.session.refreshToken = refresh_token;
-    }
+    const authData = await UserAuthService.handleCallback(code, redirectUri);
+    req.session.userName = authData.userName;
+    req.session.accessToken = authData.accessToken;
+    req.session.refreshToken = authData.refreshToken;
+    console.log(authData.userName);
     res.redirect(process.env.ORIGIN_URL);
   } catch (error) {
     console.error("Detailed error:", {
