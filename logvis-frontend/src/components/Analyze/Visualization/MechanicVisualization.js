@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import GameMap from "./GameMap/GameMap";
-import LoadingOverlay from "./LoadingOverlay";
-import TimeLineVisualization from "./TimeLineVisualization";
+import LoadingOverlay from "../../Shared/LoadingOverlay";
+import TimeLineVisualization from "./TimeLine/TimeLineVisualization";
 
 const MechanicVisualization = ({ reportCode, fight }) => {
   const [mechanicData, setMechanicData] = useState(null);

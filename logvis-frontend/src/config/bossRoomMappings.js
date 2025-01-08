@@ -68,12 +68,12 @@ const BossRoomMappings = {
     437469: {
       name: "Queensbane",
       icon: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_painspike.jpg",
-      description: "Queensbane dropped off by {placeholder}",
+      description: "Queensbane expired on {placeholder}",
     },
     436934: {
       name: "Assassination",
       icon: "https://wow.zamimg.com/images/wow/icons/large/ability_theblackarrow.jpg",
-      description: "Assassination expired on {placeholder}",
+      description: "Assassination dropped off by {placeholder}",
     },
   },
 

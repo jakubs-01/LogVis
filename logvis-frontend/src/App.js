@@ -1,23 +1,34 @@
 // src/App.js
+// React and React Router
 import React, { useState } from "react";
-import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LogsPage from "./components/LogsPage";
-import MainLayout from "./components/MainLayout";
-import NavBar from "./components/NavBar/NavBar";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import "@fontsource/roboto";
-import PageNotFound from "./components/PageNotFound";
-import QueryLogsPage from "./components/QueryLogsPage";
-import CircularProgress from "@mui/material/CircularProgress";
-import UnauthorizedAccess from "./components/UnauthorizedAccess";
 import { Helmet } from "react-helmet";
-import HomePage from "./components/HomePage";
-import IconButton from "@mui/material/IconButton";
+
+// Material UI
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import CssBaseline from "@mui/material/CssBaseline";
+import IconButton from "@mui/material/IconButton";
+
+// Material UI Icons
 import CloseIcon from "@mui/icons-material/Close";
-import NotificationSnackbar from "./components/NotificationSnackbar";
+
+// Fonts
+import "@fontsource/roboto";
+
+// Styles
+import "./App.css";
+
+// Components
+import HomePage from "./components/Home/HomePage";
+import LogsPage from "./components/Logs/LogsPage";
+import MainLayout from "./components/Analyze/MainLayout";
+import NavBar from "./components/NavBar/NavBar";
+import NotificationSnackbar from "./components/Shared/NotificationSnackbar";
+import PageNotFound from "./components/PageNotFound";
+import QueryLogsPage from "./components/QueryLogs/QueryLogsPage";
+import UnauthorizedAccess from "./components/UnauthorizedAccess";
 
 const theme = createTheme({
   palette: {
