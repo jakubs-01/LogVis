@@ -3,23 +3,12 @@ const axios = require("axios");
 const WarcraftLogsAPIInstance = require("../services/api-service");
 
 exports.login = (req, res) => {
-  function generateVerifier() {
-    const verifier = crypto.randomBytes(32).toString("base64url");
-    return verifier;
-  }
-
-  function generateChallenge(verifier) {
-    return crypto.createHash("sha256").update(verifier).digest("base64url");
-  }
-  const codeVerifier = generateVerifier();
-  const codeChallenge = generateChallenge(codeVerifier);
-  req.session.codeVerifier = codeVerifier; // Store in session
+  const state = crypto.randomBytes(32).toString("base64url");
+  req.session.state = state;
   const clientId = process.env.CLIENT_ID;
-  const redirectUri = encodeURIComponent(
-    process.env.USER_AUTH_CALLBACK_ENDPOINT
-  );
-  const authUrl = `https://www.warcraftlogs.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
-  res.redirect(authUrl);
+  const redirectUri = `https://www.warcraftlogs.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${process.env.USER_AUTH_CALLBACK_ENDPOINT}&state=${state}`;
+
+  res.redirect(redirectUri);
 };
 
 exports.logout = (req, res) => {
@@ -29,14 +18,17 @@ exports.logout = (req, res) => {
 };
 
 exports.callback = async (req, res) => {
-  const code = req.query.code;
+  const { code, state } = req.query;
+  if (state !== req.session.state) {
+    return res.status(400).json({ message: "Invalid state" });
+  }
+
   const clientId = process.env.CLIENT_ID;
   const redirectUri = encodeURIComponent(
     process.env.USER_AUTH_CALLBACK_ENDPOINT
   );
 
   try {
-    const verifier = req.session.codeVerifier; // Get from session instead of localStorage
     const auth = Buffer.from(
       `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
     ).toString("base64");
@@ -45,9 +37,8 @@ exports.callback = async (req, res) => {
       {
         grant_type: "authorization_code",
         code: code,
-        redirect_uri: decodeURIComponent(redirectUri), // Decode the URI for the request
+        redirect_uri: decodeURIComponent(redirectUri),
         client_id: clientId,
-        code_verifier: verifier,
       },
       {
         headers: {
@@ -57,16 +48,17 @@ exports.callback = async (req, res) => {
         },
       }
     );
-    const accessToken = response.data.access_token;
-    if (accessToken) {
+
+    const { access_token, refresh_token } = response.data;
+    if (access_token) {
       const userName = await WarcraftLogsAPIInstance.fetchAuthUserName(
-        accessToken
+        access_token
       );
       const data = userName.data.userData.currentUser.name;
       req.session.userName = data;
+      req.session.accessToken = access_token;
+      req.session.refreshToken = refresh_token;
     }
-    req.session.accessToken = accessToken;
-
     res.redirect(process.env.ORIGIN_URL);
   } catch (error) {
     console.error("Detailed error:", {
@@ -79,6 +71,38 @@ exports.callback = async (req, res) => {
       details: error.message,
       responseData: error.response?.data,
     });
+  }
+};
+
+exports.refreshToken = async (req, res) => {
+  try {
+    const auth = Buffer.from(
+      `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
+    ).toString("base64");
+
+    const response = await axios.post(
+      "https://www.warcraftlogs.com/oauth/token",
+      {
+        grant_type: "refresh_token",
+        refresh_token: req.session.refreshToken,
+        client_id: process.env.CLIENT_ID,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Basic ${auth}`,
+          Accept: "application/json",
+        },
+      }
+    );
+
+    const { access_token, refresh_token } = response.data;
+    req.session.accessToken = access_token;
+    req.session.refreshToken = refresh_token;
+    res.status(200).json({ message: "Token refreshed successfully" });
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    res.status(500).json({ message: "Error refreshing token" });
   }
 };
 
