@@ -18,7 +18,7 @@ class WarcraftLogsAPI {
    * @constructor
    */
   constructor() {
-    this.accessToken = null;
+    this.server_access_token = null;
     this.endpoint = process.env.ENDPOINT_URL;
     this.authEndpoint = process.env.ENDPOINT_AUTH_URL;
     this.cache = new NodeCache({
@@ -43,7 +43,7 @@ class WarcraftLogsAPI {
    * @async
    */
   async initialize() {
-    this.accessToken = await getAccessToken();
+    this.server_access_token = await getAccessToken();
   }
 
   /**
@@ -51,17 +51,17 @@ class WarcraftLogsAPI {
    * @async
    * @param {string} query - The GraphQL query to execute
    * @param {Object} variables - Query variables
-   * @param {string} [accessToken] - Optional access token for authentication
+   * @param {string} [user_access_token] - Optional access token for authentication
    * @returns {Promise<Object>} The query response data
    * @throws {Error} If the query fails or returns errors
    */
-  async executeQuery(query, variables, accessToken) {
+  async executeQuery(query, variables, user_access_token) {
     const startTime = performance.now(); // Start timing
     let fromCache = false;
     try {
       const cacheKey =
         this._generateCacheKey(query, variables) +
-        (accessToken ? `_${accessToken}` : "");
+        (user_access_token ? `_${user_access_token}` : "");
       const cachedData = this.cache.get(cacheKey);
 
       if (cachedData) {
@@ -70,12 +70,14 @@ class WarcraftLogsAPI {
       }
 
       const headers = {
-        Authorization: `Bearer ${accessToken ? accessToken : this.accessToken}`,
+        Authorization: `Bearer ${
+          user_access_token ? user_access_token : this.server_access_token
+        }`,
         "Content-Type": "application/json",
       };
 
       const response = await axios.post(
-        accessToken ? this.authEndpoint : this.endpoint,
+        user_access_token ? this.authEndpoint : this.endpoint,
         { query, variables },
         { headers }
       );
@@ -84,8 +86,8 @@ class WarcraftLogsAPI {
         throw new Error(`GraphQL Error: ${errorMessage}`);
       }
       this.cache.set(cacheKey, response.data);
-      if (accessToken) {
-        this.cache.set(`${cacheKey}_token`, accessToken);
+      if (user_access_token) {
+        this.cache.set(`${cacheKey}_token`, user_access_token);
       }
       return response.data;
     } catch (error) {
@@ -112,11 +114,11 @@ class WarcraftLogsAPI {
    * Fetches report title and author information
    * @async
    * @param {string} reportCode - The report code to fetch data for
-   * @param {string} [accessToken] - Optional access token
+   * @param {string} [user_access_token] - Optional access token
    * @returns {Promise<Object>} The title and author data
    * @throws {Error} If reportCode is missing or invalid
    */
-  async fetchTitleAndAuthor(reportCode, accessToken) {
+  async fetchTitleAndAuthor(reportCode, user_access_token) {
     if (!reportCode) {
       throw new Error("Report code is missing");
     }
@@ -124,18 +126,18 @@ class WarcraftLogsAPI {
       throw new Error("Report code must be a string");
     }
     const query = QUERIES.FETCH_TITLE_AND_AUTHOR;
-    return this.executeQuery(query, { reportCode }, accessToken);
+    return this.executeQuery(query, { reportCode }, user_access_token);
   }
 
   /**
    * Fetches fight data from a report
    * @async
    * @param {string} reportCode - The report code to fetch fights from
-   * @param {string} [accessToken] - Optional access token
+   * @param {string} [user_access_token] - Optional access token
    * @returns {Promise<Object>} The fights data
    * @throws {Error} If reportCode is missing or invalid
    */
-  async fetchFights(reportCode, accessToken) {
+  async fetchFights(reportCode, user_access_token) {
     if (!reportCode) {
       throw new Error("Report code is missing");
     }
@@ -143,7 +145,7 @@ class WarcraftLogsAPI {
       throw new Error("Report code must be a string");
     }
     const query = QUERIES.FETCH_FIGHTS;
-    return this.executeQuery(query, { reportCode }, accessToken);
+    return this.executeQuery(query, { reportCode }, user_access_token);
   }
 
   /**
@@ -151,11 +153,11 @@ class WarcraftLogsAPI {
    * @async
    * @param {string} reportCode - The report code
    * @param {string|number} fightID - The fight ID
-   * @param {string} [accessToken] - Optional access token
+   * @param {string} [user_access_token] - Optional access token
    * @returns {Promise<Object>} The fight start time data
    * @throws {Error} If reportCode or fightID is missing or invalid
    */
-  async fetchFightStartTime(reportCode, fightID, accessToken) {
+  async fetchFightStartTime(reportCode, fightID, user_access_token) {
     if (!reportCode) {
       throw new Error("Report code is missing");
     }
@@ -168,18 +170,22 @@ class WarcraftLogsAPI {
 
     const parsedfightID = parseInt(fightID);
     const query = QUERIES.FETCH_FIGHT_STARTTIME;
-    return this.executeQuery(query, { reportCode, parsedfightID }, accessToken);
+    return this.executeQuery(
+      query,
+      { reportCode, parsedfightID },
+      user_access_token
+    );
   }
 
   /**
    * Fetches actor data from a report
    * @async
    * @param {string} reportCode - The report code
-   * @param {string} [accessToken] - Optional access token
+   * @param {string} [user_access_token] - Optional access token
    * @returns {Promise<Object>} The actors data
    * @throws {Error} If reportCode is missing or invalid
    */
-  async fetchActors(reportCode, accessToken) {
+  async fetchActors(reportCode, user_access_token) {
     if (!reportCode) {
       throw new Error("Report code is missing");
     }
@@ -187,7 +193,7 @@ class WarcraftLogsAPI {
       throw new Error("Report code must be a string");
     }
     const query = QUERIES.FETCH_ACTORS;
-    return this.executeQuery(query, { reportCode }, accessToken);
+    return this.executeQuery(query, { reportCode }, user_access_token);
   }
 
   /**
@@ -196,11 +202,11 @@ class WarcraftLogsAPI {
    * @param {string} reportCode - The report code
    * @param {string|number} abilityID - The ability ID
    * @param {string|number} fightID - The fight ID
-   * @param {string} [accessToken] - Optional access token
+   * @param {string} [user_access_token] - Optional access token
    * @returns {Promise<Object>} The damage events data
    * @throws {Error} If any required parameter is missing or invalid
    */
-  async fetchDamageEvents(reportCode, abilityID, fightID, accessToken) {
+  async fetchDamageEvents(reportCode, abilityID, fightID, user_access_token) {
     if (!reportCode) {
       throw new Error("Report code is missing");
     }
@@ -224,7 +230,7 @@ class WarcraftLogsAPI {
         parsedabilityID,
         parsedfightID,
       },
-      accessToken
+      user_access_token
     );
   }
 
@@ -234,11 +240,11 @@ class WarcraftLogsAPI {
    * @param {string} reportCode - The report code
    * @param {string|number} abilityID - The ability ID
    * @param {string|number} fightID - The fight ID
-   * @param {string} [accessToken] - Optional access token
+   * @param {string} [user_access_token] - Optional access token
    * @returns {Promise<Object>} The debuff events data
    * @throws {Error} If any required parameter is missing or invalid
    */
-  async fetchDebuffEvents(reportCode, abilityID, fightID, accessToken) {
+  async fetchDebuffEvents(reportCode, abilityID, fightID, user_access_token) {
     if (!reportCode) {
       throw new Error("Report code is missing");
     }
@@ -261,7 +267,7 @@ class WarcraftLogsAPI {
         parsedabilityID,
         parsedfightID,
       },
-      accessToken
+      user_access_token
     );
   }
 
@@ -272,7 +278,7 @@ class WarcraftLogsAPI {
    * @param {string|number} targetID - The target ID
    * @param {string|number} startTime - The reference time
    * @param {string|number} fightID - The fight ID
-   * @param {string} [accessToken] - Optional access token
+   * @param {string} [user_access_token] - Optional access token
    * @returns {Promise<Object>} The closest event data
    * @throws {Error} If any required parameter is missing or invalid
    */
@@ -281,7 +287,7 @@ class WarcraftLogsAPI {
     targetID,
     startTime,
     fightID,
-    accessToken
+    user_access_token
   ) {
     if (!reportCode) {
       throw new Error("Report code is missing");
@@ -312,19 +318,19 @@ class WarcraftLogsAPI {
         parsedendTime,
         parsedfightID,
       },
-      accessToken
+      user_access_token
     );
   }
 
   /**
    * Fetches the authenticated user's name
    * @async
-   * @param {string} accessToken - The access token for authentication
+   * @param {string} user_access_token - The access token for authentication
    * @returns {Promise<Object>} The user name data
    */
-  async fetchAuthUserName(accessToken) {
+  async fetchAuthUserName(user_access_token) {
     const query = QUERIES.FETCH_AUTH_USER_NAME;
-    return this.executeQuery(query, {}, accessToken);
+    return this.executeQuery(query, {}, user_access_token);
   }
 }
 

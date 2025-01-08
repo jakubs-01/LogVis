@@ -1,13 +1,10 @@
+# backend/Dockerfile.dev
 FROM node:18
 
 WORKDIR /app
 
 COPY package*.json ./
-
 RUN npm install
 
-COPY . .
-
-EXPOSE 5000
-
-CMD ["npm", "run", "dev"]
+# Don't copy source code here - we'll use volumes instead
+CMD ["npm", "run", "dev"] 

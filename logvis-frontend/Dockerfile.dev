@@ -1,13 +1,10 @@
+# frontend/Dockerfile.dev
 FROM node:18
 
 WORKDIR /app
 
 COPY package*.json ./
-
 RUN npm install
 
-COPY . .
-
-EXPOSE 3000
-
+# Don't copy source code here - we'll use volumes instead
 CMD ["npm", "run", "start"]

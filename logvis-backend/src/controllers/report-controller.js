@@ -13,7 +13,7 @@ exports.getFights = async (req, res) => {
   try {
     const fights = await WarcraftLogsAPIInstance.fetchFights(
       reportCode,
-      req.session.accessToken
+      req.session.access_token
     );
     const filteredFights = await dataService.extractFights(fights);
     res.json(filteredFights);
@@ -35,7 +35,7 @@ exports.getActors = async (req, res) => {
   try {
     const actors = await WarcraftLogsAPIInstance.fetchActors(
       reportCode,
-      req.session.accessToken
+      req.session.access_token
     );
     const filterActors = await dataService.extractActors(actors);
     res.json(filterActors);
@@ -66,7 +66,7 @@ exports.getDamageEvents = async (req, res) => {
             reportCode,
             abilityId,
             fightIDs,
-            req.session.accessToken
+            req.session.access_token
           );
           return events || [];
         } catch (error) {
@@ -83,13 +83,13 @@ exports.getDamageEvents = async (req, res) => {
 
     const actors = await WarcraftLogsAPIInstance.fetchActors(
       reportCode,
-      req.session.accessToken
+      req.session.access_token
     );
     const filterActors = await dataService.extractActors(actors);
     const fightStartTime = await WarcraftLogsAPIInstance.fetchFightStartTime(
       reportCode,
       fightIDs,
-      req.session.accessToken
+      req.session.access_token
     );
     const extractedFightStartTime = await dataService.extractFightStartTime(
       fightStartTime
@@ -100,7 +100,7 @@ exports.getDamageEvents = async (req, res) => {
       extractedFightStartTime,
       reportCode,
       boss.regions,
-      req.session.accessToken
+      req.session.access_token
     );
     res.json(mappedEvents);
   } catch (error) {
@@ -131,7 +131,7 @@ exports.getDebuffEvents = async (req, res) => {
             reportCode,
             abilityId,
             fightIDs,
-            req.session.accessToken
+            req.session.access_token
           );
           return events || [];
         } catch (error) {
@@ -148,13 +148,13 @@ exports.getDebuffEvents = async (req, res) => {
 
     const actors = await WarcraftLogsAPIInstance.fetchActors(
       reportCode,
-      req.session.accessToken
+      req.session.access_token
     );
     const filterActors = await dataService.extractActors(actors);
     const fightStartTime = await WarcraftLogsAPIInstance.fetchFightStartTime(
       reportCode,
       fightIDs,
-      req.session.accessToken
+      req.session.access_token
     );
     const extractedFightStartTime = await dataService.extractFightStartTime(
       fightStartTime
@@ -165,7 +165,7 @@ exports.getDebuffEvents = async (req, res) => {
       boss.regions,
       reportCode,
       extractedFightStartTime,
-      req.session.accessToken
+      req.session.access_token
     );
     res.json(mappedEvents);
   } catch (error) {
@@ -189,7 +189,7 @@ exports.getClosestEvent = async (req, res) => {
       targetID,
       startTime,
       fightIDs,
-      req.session.accessToken
+      req.session.access_token
     );
     const filteredEvents = await dataService.extractClosestEvent(
       events,
@@ -213,7 +213,7 @@ exports.getTitleAndAuthor = async (req, res) => {
   try {
     const TitleAndAuthor = await WarcraftLogsAPIInstance.fetchTitleAndAuthor(
       reportCode,
-      req.session.accessToken
+      req.session.access_token
     );
     const filterTitleAndAuthor = await dataService.extractAuthorAndTitle(
       TitleAndAuthor

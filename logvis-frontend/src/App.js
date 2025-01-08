@@ -62,7 +62,6 @@ const theme = createTheme({
 });
 
 function App() {
-  const [url, setUrl] = useState("");
   const [reportCode, setReportCode] = useState("");
   const [fights, setFights] = useState([]);
   const [selectedFight, setSelectedFight] = useState(null);
@@ -72,10 +71,6 @@ function App() {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(null);
   const [success, setSuccess] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
