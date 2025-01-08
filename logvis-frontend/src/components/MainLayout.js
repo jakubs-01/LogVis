@@ -84,7 +84,7 @@ const MainLayout = ({
         handleClick();
       }
     };
-
+    console.log("MainLayout UseEffect triggered");
     if (reportCodeFromQuery) {
       setReportCode(reportCodeFromQuery);
       fetchData(reportCodeFromQuery);

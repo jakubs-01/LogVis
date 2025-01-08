@@ -18,49 +18,11 @@ import BossRoomMappings from "../config/bossRoomMappings";
 import { useEffect } from "react";
 
 const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
-  console.log("Received events:", events);
-  console.log("Events type:", typeof events);
-  console.log("Is events an array?", Array.isArray(events));
-  console.log("bossName: ", bossName);
   // First group events by abilityGameID, with error handling
-  const eventsByAbility = Array.isArray(events)
-    ? events.reduce((acc, event) => {
-        if (!acc[event.abilityGameID]) {
-          acc[event.abilityGameID] = [];
-        }
-        acc[event.abilityGameID].push(event);
-        return acc;
-      }, {})
-    : {};
-
-  console.log("Grouped events:", eventsByAbility);
-
-  // Get list of unique ability IDs
-  const abilityIds = Object.keys(eventsByAbility);
-  console.log("Ability IDs:", abilityIds);
-
-  // State to track which ability timeline to show
-  const [selectedAbility, setSelectedAbility] = useState(abilityIds[0]);
-
-  // Group selected ability events by set number
-  const groupedEvents =
-    selectedAbility && eventsByAbility[selectedAbility]
-      ? eventsByAbility[selectedAbility].reduce((acc, event) => {
-          if (!acc[event.setnumber]) {
-            acc[event.setnumber] = [];
-          }
-          acc[event.setnumber].push(event);
-          return acc;
-        }, {})
-      : {};
-
-  console.log("Grouped events by set:", groupedEvents);
-
-  // Sort events within each set by timestamp
-  Object.values(groupedEvents).forEach((setEvents) => {
-    setEvents.sort((a, b) => a.timestamp - b.timestamp);
-  });
-
+  const [selectedAbility, setSelectedAbility] = useState(null);
+  const [abilityIds, setAbilityIds] = useState([]);
+  const [groupedEvents, setGroupedEvents] = useState({});
+  const [notSorted, setNotSorted] = useState(true);
   const getClassColor = (playerClass) => {
     const classColors = {
       Rogue: "#FFF569",
@@ -93,10 +55,76 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
   };
 
   useEffect(() => {
-    setSelectedAbility(abilityIds[0] || null);
-  }, [bossName, abilityIds]);
+    setNotSorted(true);
+    console.log("events: ", events);
+    const eventsByAbility = Array.isArray(events)
+      ? events.reduce((acc, event) => {
+          if (!acc[event.abilityGameID]) {
+            acc[event.abilityGameID] = [];
+          }
+          acc[event.abilityGameID].push(event);
+          return acc;
+        }, {})
+      : {};
 
-  if (!abilityIds || !bossName) return <div>No ability IDs found</div>;
+    // Get list of unique ability IDs
+    const uniqueAbilityIds = Object.keys(eventsByAbility);
+    setAbilityIds(uniqueAbilityIds);
+    // Set initial selected ability if none is selected
+    if (!selectedAbility && uniqueAbilityIds.length > 0) {
+      setSelectedAbility(uniqueAbilityIds[0]);
+    }
+    setNotSorted(false);
+    console.log("Sorted");
+  }, [events]);
+
+  // Add a separate useEffect for grouping events by set number
+  useEffect(() => {
+    setNotSorted(true);
+    if (!selectedAbility || !events.length) return;
+
+    const eventsByAbility = events.reduce((acc, event) => {
+      if (!acc[event.abilityGameID]) {
+        acc[event.abilityGameID] = [];
+      }
+      acc[event.abilityGameID].push(event);
+      return acc;
+    }, {});
+
+    // Group selected ability events by set number
+    const grouped = eventsByAbility[selectedAbility]
+      ? eventsByAbility[selectedAbility].reduce((acc, event) => {
+          if (!acc[event.setnumber]) {
+            acc[event.setnumber] = [];
+          }
+          // Format timestamp before adding to group
+          const formattedEvent = {
+            ...event,
+            formattedTime: formatTimestamp(event.timestamp),
+          };
+          acc[event.setnumber].push(formattedEvent);
+          return acc;
+        }, {})
+      : {};
+
+    // Sort events within each set by timestamp
+    Object.values(grouped).forEach((setEvents) => {
+      setEvents.sort((a, b) => a.timestamp - b.timestamp);
+    });
+
+    setGroupedEvents(grouped);
+    console.log("Grouped events:", grouped);
+    setNotSorted(false);
+  }, [selectedAbility, events]);
+
+  if (
+    !events ||
+    events.length === 0 ||
+    !bossName ||
+    notSorted ||
+    abilityIds.length === 0
+  )
+    return <div>.</div>;
   return (
     <Box
       sx={{
@@ -124,14 +152,14 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
               }}
             >
               <img
-                src={BossRoomMappings.getAbilityIcon(bossName, abilityId)}
+                src={BossRoomMappings.getAbilityIcon(abilityId)}
                 alt=""
                 style={{
                   width: 24,
                   height: 24,
                 }}
               />
-              {BossRoomMappings.getAbilityName(bossName, abilityId)}
+              {BossRoomMappings.getAbilityName(abilityId)}
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
@@ -175,7 +203,7 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
                           {event.playerName} ({event.playerClass})
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                          Time: {formatTimestamp(event.timestamp)}
+                          Time: {event.formattedTime}
                         </Typography>
                         {eventIndex !== setEvents.length - 1 && (
                           <Divider sx={{ my: 1 }} />

@@ -15,7 +15,7 @@ const MechanicVisualization = ({ reportCode, fight }) => {
       setIsLoading(true);
       // Clear existing data when starting a new fetch
       setMechanicData(null);
-
+      console.log("MechanicVisualization UseEffect triggered");
       try {
         const [damageResponse, debuffResponse] = await Promise.all([
           axios.get(process.env.REACT_APP_DAMAGE_EVENTS_API_URL, {
@@ -65,11 +65,11 @@ const MechanicVisualization = ({ reportCode, fight }) => {
               fightID={fight.id}
               reportCode={reportCode}
             />
-            {/* <TimeLineVisualization
+            <TimeLineVisualization
               events={mechanicData}
               bossName={fight.name}
               fightStartTime={fight.startTime}
-            /> */}
+            />
           </>
         ) : (
           <LoadingOverlay

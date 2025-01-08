@@ -170,8 +170,14 @@ function getAbilityInfo(bossName, abilityID) {
  * @param {number} abilityID - The ID of the ability.
  * @returns {string} The icon URL for the specified ability.
  */
-function getAbilityIcon(bossName, abilityID) {
-  return BossRoomMappings[bossName][abilityID].icon;
+function getAbilityIcon(abilityID) {
+  // Search through all bosses to find the one with this ability ID
+  for (const boss in BossRoomMappings) {
+    if (BossRoomMappings[boss][abilityID]) {
+      return BossRoomMappings[boss][abilityID].icon;
+    }
+  }
+  return null; // Return null if ability ID not found
 }
 
 /**
@@ -180,8 +186,13 @@ function getAbilityIcon(bossName, abilityID) {
  * @param {number} abilityID - The ID of the ability.
  * @returns {string} The name of the specified ability.
  */
-function getAbilityName(bossName, abilityID) {
-  return BossRoomMappings[bossName][abilityID].name;
+function getAbilityName(abilityID) {
+  for (const boss in BossRoomMappings) {
+    if (BossRoomMappings[boss][abilityID]) {
+      return BossRoomMappings[boss][abilityID].name;
+    }
+  }
+  return null; // Return null if ability ID not found
 }
 
 module.exports = {
