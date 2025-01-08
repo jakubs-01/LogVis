@@ -13,9 +13,9 @@ jobs:
 
       - name: Get commit info
         run: |
-          echo "COMMIT_MSG=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
-          echo "COMMIT_AUTHOR=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git log -1 --pretty=%h)" >> $GITHUB_ENV
+          echo "COMMIT_MSG=$(git log -1 --pretty=%B | sed 's/"/\"/g' | tr '\n' ' ')" >> "$GITHUB_ENV"
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=%an)" >> "$GITHUB_ENV"
+          echo "COMMIT_HASH=$(git log -1 --pretty=%h)" >> "$GITHUB_ENV"
 
       - name: Start Discord Notification
         uses: sarisia/actions-status-discord@v1
