@@ -67,7 +67,6 @@ const MechanicVisualization = ({ reportCode, fight }) => {
             />
             <TimeLineVisualization
               events={mechanicData}
-              bossName={fight.name}
               fightStartTime={fight.startTime}
             />
           </>

@@ -3,7 +3,6 @@ import {
   Box,
   Paper,
   Typography,
-  Divider,
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
@@ -18,20 +17,11 @@ import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import BossRoomMappings from "../config/bossRoomMappings";
 import { useEffect } from "react";
 
-const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
-  // First group events by abilityGameID, with error handling
+const TimeLineVisualization = ({ events, fightStartTime }) => {
   const [selectedAbility, setSelectedAbility] = useState(null);
   const [abilityIds, setAbilityIds] = useState([]);
   const [groupedEvents, setGroupedEvents] = useState({});
   const [notSorted, setNotSorted] = useState(true);
-
-  const formatTimestamp = (timestamp) => {
-    const correctTime = timestamp - fightStartTime;
-    const seconds = Math.floor(correctTime / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-  };
 
   const handleAbilityChange = (event, newAbility) => {
     if (newAbility !== null) {
@@ -53,7 +43,6 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
 
   useEffect(() => {
     setNotSorted(true);
-    console.log("events: ", events);
     const eventsByAbility = Array.isArray(events)
       ? events.reduce((acc, event) => {
           if (!acc[event.abilityGameID]) {
@@ -72,8 +61,7 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
       setSelectedAbility(uniqueAbilityIds[0]);
     }
     setNotSorted(false);
-    console.log("Sorted");
-  }, [events]);
+  }, [events, selectedAbility]);
 
   // Add a separate useEffect for grouping events by set number
   useEffect(() => {
@@ -87,6 +75,14 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
       acc[event.abilityGameID].push(event);
       return acc;
     }, {});
+
+    const formatTimestamp = (timestamp) => {
+      const correctTime = timestamp - fightStartTime;
+      const seconds = Math.floor(correctTime / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+    };
 
     // Group selected ability events by set number
     const grouped = eventsByAbility[selectedAbility]
@@ -110,17 +106,10 @@ const TimeLineVisualization = ({ events = [], bossName, fightStartTime }) => {
     });
 
     setGroupedEvents(grouped);
-    console.log("Grouped events:", grouped);
     setNotSorted(false);
-  }, [selectedAbility, events]);
+  }, [selectedAbility, events, fightStartTime]);
 
-  if (
-    !events ||
-    events.length === 0 ||
-    !bossName ||
-    notSorted ||
-    abilityIds.length === 0
-  )
+  if (!events || events.length === 0 || notSorted || abilityIds.length === 0)
     return <div>.</div>;
   return (
     <Box

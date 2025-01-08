@@ -89,6 +89,7 @@ const MainLayout = ({
       setReportCode(reportCodeFromQuery);
       fetchData(reportCodeFromQuery);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportCodeFromQuery]);
 
   if (!reportCode) {
