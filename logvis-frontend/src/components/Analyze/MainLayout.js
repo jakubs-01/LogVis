@@ -3,15 +3,14 @@ import { useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Grid2 from "@mui/material/Grid2";
 import FightSelector from "./FightList/FightSelector";
-import MechanicVisualization from "./MechanicVisualization";
+import MechanicVisualization from "./Visualization/MechanicVisualization";
 import { Typography } from "@mui/material";
-import NotificationSnackbar from "./NotificationSnackbar";
+import NotificationSnackbar from "../Shared/NotificationSnackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import TimeLineVisualization from "./TimeLineVisualization";
-import LoadingOverlay from "./LoadingOverlay";
+import LoadingOverlay from "../Shared/LoadingOverlay";
 const MainLayout = ({
   reportCode,
   fights,

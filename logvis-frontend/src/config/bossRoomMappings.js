@@ -68,12 +68,12 @@ const BossRoomMappings = {
     437469: {
       name: "Queensbane",
       icon: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_painspike.jpg",
-      description: "Queensbane dropped off by {placeholder}",
+      description: "Queensbane expired on {placeholder}",
     },
     436934: {
       name: "Assassination",
       icon: "https://wow.zamimg.com/images/wow/icons/large/ability_theblackarrow.jpg",
-      description: "Assassination expired on {placeholder}",
+      description: "Assassination dropped off by {placeholder}",
     },
   },
 
@@ -103,7 +103,7 @@ const BossRoomMappings = {
     445152: {
       name: "Acolyte's Essence",
       icon: "https://wow.zamimg.com/images/wow/icons/large/inv_cosmicvoid_buff.jpg",
-      description: "Acolyte's Essence was dropped by {placeholder}",
+      description: "Acolyte's Essence dropped by {placeholder}",
     },
   },
 };

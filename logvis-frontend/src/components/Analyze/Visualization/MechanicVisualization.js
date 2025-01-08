@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import GameMap from "./GameMap/GameMap";
-import LoadingOverlay from "./LoadingOverlay";
-import TimeLineVisualization from "./TimeLineVisualization";
-
+import LoadingOverlay from "../../Shared/LoadingOverlay";
+import TimeLineVisualization from "./TimeLine/TimeLineVisualization";
+import { Box, Grid } from "@mui/material";
 const MechanicVisualization = ({ reportCode, fight }) => {
   const [mechanicData, setMechanicData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,22 +54,28 @@ const MechanicVisualization = ({ reportCode, fight }) => {
 
   // Visualization Logic
   return (
-    <div>
-      <div style={{ position: "relative", width: "1002px", height: "668px" }}>
+    <Box>
+      <Box sx={{ position: "fixed" }}>
         {!isLoading && mechanicData && mechanicData.length > 0 ? (
-          <>
-            <GameMap
-              coordinates={mechanicData}
-              bossName={fight.name}
-              fightStartTime={fight.startTime}
-              fightID={fight.id}
-              reportCode={reportCode}
-            />
-            <TimeLineVisualization
-              events={mechanicData}
-              fightStartTime={fight.startTime}
-            />
-          </>
+          <Grid container spacing={0.5}>
+            <Grid item xs={8}>
+              <GameMap
+                coordinates={mechanicData}
+                bossName={fight.name}
+                fightStartTime={fight.startTime}
+                fightID={fight.id}
+                reportCode={reportCode}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TimeLineVisualization
+                events={mechanicData}
+                fightStartTime={fight.startTime}
+                fightID={fight.id}
+                reportCode={reportCode}
+              />
+            </Grid>
+          </Grid>
         ) : (
           <LoadingOverlay
             message="Loading fight data..."
@@ -77,8 +83,8 @@ const MechanicVisualization = ({ reportCode, fight }) => {
             height={668}
           />
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

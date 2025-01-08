@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, FormControlLabel, Checkbox, Stack } from "@mui/material";
-import BossRoomMappings from "../../config/bossRoomMappings";
+import BossRoomMappings from "../../../../config/bossRoomMappings";
 
 const AbilityControls = ({
   bossName,

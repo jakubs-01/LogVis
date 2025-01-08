@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { generateTooltipContent } from "../../../utils/tooltipHelpers";
+import { generateTooltipContent } from "../../../../../utils/tooltipHelpers";
 
 const MapTooltip = ({ data, position, isVisible }) => {
   useEffect(() => {
