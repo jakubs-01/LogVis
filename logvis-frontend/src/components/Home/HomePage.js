@@ -1,9 +1,6 @@
 import React from "react";
 import { Box, Typography, Paper, Container, Stack } from "@mui/material";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
-import TimelineIcon from "@mui/icons-material/Timeline";
 import MapIcon from "@mui/icons-material/Map";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 

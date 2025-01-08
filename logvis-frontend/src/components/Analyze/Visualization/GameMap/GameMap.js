@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ClassToColour } from "../../config/ClassColours";
+import { ClassToColour } from "../../../../config/ClassColours";
 import AbilityControls from "./AbilityControls";
-import BossRoomMappings from "../../config/bossRoomMappings";
+import BossRoomMappings from "../../../../config/bossRoomMappings";
 import ButtonControls from "./ButtonControls";
 import * as d3 from "d3";
-import { useTooltip } from "../../hooks/useTooltip";
-import { useZoomControls } from "../../hooks/zoomControls";
-import { AbilityToggle } from "../../hooks/abilityToggle";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import { useZoomControls } from "../../../../hooks/zoomControls";
+import { AbilityToggle } from "../../../../hooks/abilityToggle";
 import MapTooltip from "./Tooltips/MapTooltip";
 import axios from "axios";
 
