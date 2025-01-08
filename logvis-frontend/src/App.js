@@ -72,6 +72,8 @@ const theme = createTheme({
   },
 });
 
+const allowedUsers = process.env.REACT_APP_ALLOWED_USERS.split(",");
+
 function App() {
   const [reportCode, setReportCode] = useState("");
   const [fights, setFights] = useState([]);
@@ -148,7 +150,7 @@ function App() {
                 element={
                   fetchingUserName ? (
                     <CircularProgress />
-                  ) : userName && userName === "Nuloa" ? (
+                  ) : allowedUsers.includes(userName) ? (
                     <>
                       <Helmet>
                         <title>Logs - LogVis</title>
@@ -165,7 +167,7 @@ function App() {
                 element={
                   fetchingUserName ? (
                     <CircularProgress />
-                  ) : userName && userName === "Nuloa" ? (
+                  ) : allowedUsers.includes(userName) ? (
                     <>
                       <Helmet>
                         {" "}

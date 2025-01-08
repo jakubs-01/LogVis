@@ -14,8 +14,10 @@ const cache = new NodeCache({
   checkperiod: 60 * 60 * 24, // 24 hours
 });
 
+const allowedUsers = process.env.ALLOWED_USERS.split(",");
+
 exports.getLogs = async (req, res) => {
-  if (!req.session.userName) {
+  if (!req.session.userName || !allowedUsers.includes(req.session.userName)) {
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
@@ -24,7 +26,7 @@ exports.getLogs = async (req, res) => {
 };
 
 exports.getQueryLogs = async (req, res) => {
-  if (!req.session.userName || req.session.userName !== "Nuloa") {
+  if (!req.session.userName || !allowedUsers.includes(req.session.userName)) {
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
@@ -33,7 +35,7 @@ exports.getQueryLogs = async (req, res) => {
 };
 
 exports.getIpInfo = async (req, res) => {
-  if (!req.session.userName || req.session.userName !== "Nuloa") {
+  if (!req.session.userName || !allowedUsers.includes(req.session.userName)) {
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
