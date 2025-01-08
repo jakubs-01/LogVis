@@ -1,4 +1,3 @@
-const axios = require("axios");
 const UserAuthService = require("../services/user-auth-service");
 
 exports.login = (req, res) => {
@@ -24,9 +23,8 @@ exports.callback = async (req, res) => {
   try {
     const authData = await UserAuthService.handleCallback(code, redirectUri);
     req.session.userName = authData.userName;
-    req.session.accessToken = authData.accessToken;
-    req.session.refreshToken = authData.refreshToken;
-    console.log(authData.userName);
+    req.session.access_token = authData.access_token;
+    req.session.refresh_token = authData.refresh_token;
     res.redirect(process.env.ORIGIN_URL);
   } catch (error) {
     console.error("Detailed error:", {
@@ -44,29 +42,11 @@ exports.callback = async (req, res) => {
 
 exports.refreshToken = async (req, res) => {
   try {
-    const auth = Buffer.from(
-      `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
-    ).toString("base64");
-
-    const response = await axios.post(
-      "https://www.warcraftlogs.com/oauth/token",
-      {
-        grant_type: "refresh_token",
-        refresh_token: req.session.refreshToken,
-        client_id: process.env.CLIENT_ID,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${auth}`,
-          Accept: "application/json",
-        },
-      }
+    const { access_token, refresh_token } = await UserAuthService.refreshToken(
+      req.session.refresh_token
     );
-
-    const { access_token, refresh_token } = response.data;
-    req.session.accessToken = access_token;
-    req.session.refreshToken = refresh_token;
+    req.session.access_token = access_token;
+    req.session.refresh_token = refresh_token;
     res.status(200).json({ message: "Token refreshed successfully" });
   } catch (error) {
     console.error("Error refreshing token:", error);
