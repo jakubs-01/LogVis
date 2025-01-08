@@ -38,7 +38,7 @@ export const generateTooltipContent = (data) => {
         rel="noopener noreferrer"
         data-wowhead={`spell=${data.abilityGameID}`}
       >
-        {BossRoomMappings.getAbilityName(data.bossName, data.abilityGameID)}
+        {BossRoomMappings.getAbilityName(data.abilityGameID)}
       </a>
       <br />@{formatTime(data.timestamp - data.fightStartTime)} - Set{" "}
       {data.setnumber}

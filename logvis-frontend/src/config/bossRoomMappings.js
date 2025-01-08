@@ -7,6 +7,7 @@ const BossRoomMappings = {
     435152: {
       name: "Digestive Acid",
       icon: "https://wow.zamimg.com/images/wow/icons/large/ability_creature_disease_03.jpg",
+      description: "{placeholder} cleared webs with Digestive Acid",
     },
   },
 
@@ -19,6 +20,7 @@ const BossRoomMappings = {
     444363: {
       name: "Gruesome Disgorge",
       icon: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_shadowflame.jpg",
+      description: "{placeholder} entered downstairs phase",
     },
   },
 
@@ -30,6 +32,7 @@ const BossRoomMappings = {
     434155: {
       name: "Phase Blades",
       icon: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_shieldcharge.jpg",
+      description: "{placeholder} was hit by Sikran's Phase Blades",
     },
   },
 
@@ -41,6 +44,7 @@ const BossRoomMappings = {
     439781: {
       name: "Spinneret's Strands",
       icon: "https://wow.zamimg.com/images/wow/icons/large/inv_ability_web_beam.jpg",
+      description: "{placeholder} dropped off webs",
     },
   },
 
@@ -52,6 +56,7 @@ const BossRoomMappings = {
     442660: {
       name: "Experimental Dosage",
       icon: "https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_bloodplague.jpg",
+      description: "Experimental Dosage expired on {placeholder}",
     },
   },
 
@@ -63,10 +68,12 @@ const BossRoomMappings = {
     437469: {
       name: "Queensbane",
       icon: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_painspike.jpg",
+      description: "Queensbane dropped off by {placeholder}",
     },
     436934: {
       name: "Assassination",
       icon: "https://wow.zamimg.com/images/wow/icons/large/ability_theblackarrow.jpg",
+      description: "Assassination expired on {placeholder}",
     },
   },
 
@@ -78,6 +85,7 @@ const BossRoomMappings = {
     438708: {
       name: "Stinging Swarm",
       icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_insect_swarm2.jpg",
+      description: "Stinging Swarm was dispelled on {placeholder}",
     },
   },
   //!Ansurek also needs 2296 implemented for P3
@@ -90,10 +98,12 @@ const BossRoomMappings = {
     439865: {
       name: "Silken Tomb",
       icon: "https://wow.zamimg.com/images/wow/icons/large/inv_ability_web_buff.jpg",
+      description: "Silken Tomb was applied to {placeholder}",
     },
     445152: {
       name: "Acolyte's Essence",
       icon: "https://wow.zamimg.com/images/wow/icons/large/inv_cosmicvoid_buff.jpg",
+      description: "Acolyte's Essence was dropped by {placeholder}",
     },
   },
 };
@@ -170,8 +180,14 @@ function getAbilityInfo(bossName, abilityID) {
  * @param {number} abilityID - The ID of the ability.
  * @returns {string} The icon URL for the specified ability.
  */
-function getAbilityIcon(bossName, abilityID) {
-  return BossRoomMappings[bossName][abilityID].icon;
+function getAbilityIcon(abilityID) {
+  // Search through all bosses to find the one with this ability ID
+  for (const boss in BossRoomMappings) {
+    if (BossRoomMappings[boss][abilityID]) {
+      return BossRoomMappings[boss][abilityID].icon;
+    }
+  }
+  return null; // Return null if ability ID not found
 }
 
 /**
@@ -180,8 +196,22 @@ function getAbilityIcon(bossName, abilityID) {
  * @param {number} abilityID - The ID of the ability.
  * @returns {string} The name of the specified ability.
  */
-function getAbilityName(bossName, abilityID) {
-  return BossRoomMappings[bossName][abilityID].name;
+function getAbilityName(abilityID) {
+  for (const boss in BossRoomMappings) {
+    if (BossRoomMappings[boss][abilityID]) {
+      return BossRoomMappings[boss][abilityID].name;
+    }
+  }
+  return null; // Return null if ability ID not found
+}
+
+function getAbilityDescription(abilityID) {
+  for (const boss in BossRoomMappings) {
+    if (BossRoomMappings[boss][abilityID]) {
+      return BossRoomMappings[boss][abilityID].description;
+    }
+  }
+  return null; // Return null if ability ID not found
 }
 
 module.exports = {
@@ -194,4 +224,5 @@ module.exports = {
   getAbilityInfo,
   getAbilityIcon,
   getAbilityName,
+  getAbilityDescription,
 };

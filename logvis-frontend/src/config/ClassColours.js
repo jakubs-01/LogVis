@@ -17,4 +17,32 @@ const ClassToColour = (playerClass) => {
   return classColors[playerClass] || "#AAAAAA";
 };
 
-module.exports = { ClassToColour };
+const ClassToIcon = (playerClass) => {
+  const classIcons = {
+    Warrior:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_warrior.jpg",
+    Paladin:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_paladin.jpg",
+    Hunter:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_hunter.jpg",
+    Rogue: "https://wow.zamimg.com/images/wow/icons/large/classicon_rogue.jpg",
+    Priest:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_priest.jpg",
+    DeathKnight:
+      "https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_classicon.jpg",
+    Shaman:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_shaman.jpg",
+    Mage: "https://wow.zamimg.com/images/wow/icons/large/classicon_mage.jpg",
+    Warlock:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_warlock.jpg",
+    Monk: "https://wow.zamimg.com/images/wow/icons/large/classicon_monk.jpg",
+    Druid: "https://wow.zamimg.com/images/wow/icons/large/classicon_druid.jpg",
+    DemonHunter:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_demonhunter.jpg",
+    Evoker:
+      "https://wow.zamimg.com/images/wow/icons/large/classicon_evoker.jpg",
+  };
+  return classIcons[playerClass] || "";
+};
+
+module.exports = { ClassToColour, ClassToIcon };

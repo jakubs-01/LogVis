@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import TimeLineVisualization from "./TimeLineVisualization";
 import LoadingOverlay from "./LoadingOverlay";
 const MainLayout = ({
   reportCode,
@@ -83,11 +84,12 @@ const MainLayout = ({
         handleClick();
       }
     };
-
+    console.log("MainLayout UseEffect triggered");
     if (reportCodeFromQuery) {
       setReportCode(reportCodeFromQuery);
       fetchData(reportCodeFromQuery);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportCodeFromQuery]);
 
   if (!reportCode) {
@@ -144,10 +146,12 @@ const MainLayout = ({
             }}
           >
             {selectedFight && (
-              <MechanicVisualization
-                reportCode={reportCode}
-                fight={selectedFight}
-              />
+              <>
+                <MechanicVisualization
+                  reportCode={reportCode}
+                  fight={selectedFight}
+                />
+              </>
             )}
           </Grid2>
         </Grid2>
