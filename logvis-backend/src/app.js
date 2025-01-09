@@ -13,6 +13,7 @@ const logRoutes = require("./routes/log-routes");
 const authRoutes = require("./routes/auth-routes");
 const susLogger = require("./middleware/sus-logger");
 const sessionConfig = require("./config/sessionConfig");
+const healthRoutes = require("./routes/health-routes");
 
 async function startServer() {
   const app = express();
@@ -40,7 +41,7 @@ async function startServer() {
   app.use(susLogger);
   // Apply requestLogger only to /api routes
   app.use("/api", reportRoutes);
-
+  app.use(healthRoutes);
   app.use("/admin", logRoutes);
   app.use("/auth", authRoutes);
   app.listen(port, () => {

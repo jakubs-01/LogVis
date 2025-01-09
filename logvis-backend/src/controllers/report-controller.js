@@ -54,7 +54,16 @@ exports.getActors = async (req, res) => {
 exports.getDamageEvents = async (req, res) => {
   //const { reportCode, spellId, fightIDs } = req.query;
   const { reportCode, bossName, fightIDs } = req.query;
-  boss = createBossInstance(bossName);
+  let boss;
+  try {
+    boss = createBossInstance(bossName);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(501)
+      .json({ message: `${bossName} does not have a supported module` });
+    return;
+  }
   try {
     if (!boss.abilities || boss.abilities.length === 0) {
       return res.json([]); // Return empty array if no debuffs to query
@@ -118,7 +127,17 @@ exports.getDamageEvents = async (req, res) => {
 exports.getDebuffEvents = async (req, res) => {
   //const { reportCode, spellId, fightIDs } = req.query;
   const { reportCode, bossName, fightIDs } = req.query;
-  boss = createBossInstance(bossName);
+  let boss;
+  try {
+    boss = createBossInstance(bossName);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(501)
+      .json({ message: `${bossName} does not have a supported module` });
+    return;
+  }
+
   try {
     if (!boss.debuffs || boss.debuffs.length === 0) {
       return res.json([]); // Return empty array if no debuffs to query

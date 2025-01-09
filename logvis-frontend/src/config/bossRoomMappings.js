@@ -214,6 +214,10 @@ function getAbilityDescription(abilityID) {
   return null; // Return null if ability ID not found
 }
 
+function doesBossExist(bossName) {
+  return BossRoomMappings[bossName] !== undefined;
+}
+
 module.exports = {
   getObject,
   getZoomFactor,
@@ -225,4 +229,5 @@ module.exports = {
   getAbilityIcon,
   getAbilityName,
   getAbilityDescription,
+  doesBossExist,
 };
