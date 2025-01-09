@@ -1,3 +1,7 @@
 exports.getHealth = (req, res) => {
-  res.json({ message: "OK" });
+  if (req.ip !== "127.0.0.1") {
+    res.status(403).json({ message: "Forbidden" });
+  } else {
+    res.json({ message: "OK" });
+  }
 };

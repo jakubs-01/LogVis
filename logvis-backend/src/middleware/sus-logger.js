@@ -24,6 +24,9 @@ const susLogger = (req, res, next) => {
     "/api/debuffevents",
     "/api/closestevent",
     "/api/abilityvisibility",
+
+    //Health Check
+    "/health",
   ];
 
   if (
