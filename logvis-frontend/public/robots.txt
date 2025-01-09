@@ -4,6 +4,6 @@ Allow: /
 Allow: /analyze
 Disallow: /api/
 Disallow: /admin/
-
+Disallow: /health
 # Sitemap
 Sitemap: https://logvis.jakubapp.dev/sitemap.xml
