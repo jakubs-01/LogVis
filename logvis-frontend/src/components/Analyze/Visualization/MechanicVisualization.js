@@ -6,6 +6,7 @@ import GameMap from "./GameMap/GameMap";
 import LoadingOverlay from "../../Shared/LoadingOverlay";
 import TimeLineVisualization from "./TimeLine/TimeLineVisualization";
 import { Box, Grid } from "@mui/material";
+import BossRoomMappings from "../../../config/bossRoomMappings";
 const MechanicVisualization = ({ reportCode, fight }) => {
   const [mechanicData, setMechanicData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +16,6 @@ const MechanicVisualization = ({ reportCode, fight }) => {
       setIsLoading(true);
       // Clear existing data when starting a new fetch
       setMechanicData([]);
-      console.log(mechanicData);
       try {
         const [damageResponse, debuffResponse] = await Promise.all([
           axios.get(process.env.REACT_APP_DAMAGE_EVENTS_API_URL, {
@@ -39,8 +39,6 @@ const MechanicVisualization = ({ reportCode, fight }) => {
         // Assuming both responses have a similar structure, e.g., `response.data` contains the data array
         const mergedData = [...damageResponse.data, ...debuffResponse.data];
         setMechanicData(mergedData);
-        console.log(mergedData);
-        console.log(mechanicData);
         setIsLoading(false);
         setUnSupportedBoss(false);
       } catch (error) {
@@ -57,16 +55,10 @@ const MechanicVisualization = ({ reportCode, fight }) => {
     }
   }, [reportCode, fight]);
 
-  useEffect(() => {
-    console.log("mechanicData changed:", mechanicData);
-  }, [mechanicData]);
-
   // Visualization Logic
-  if (unSupportedBoss) {
+  if (unSupportedBoss || !BossRoomMappings.doesBossExist(fight.name)) {
     return <div>Boss not supported</div>;
   }
-
-  console.log("Rendering with mechanicData:", mechanicData);
 
   if (isLoading || !mechanicData || mechanicData.length === 0) {
     return (
@@ -81,7 +73,6 @@ const MechanicVisualization = ({ reportCode, fight }) => {
       </Box>
     );
   }
-
   if (!Array.isArray(mechanicData)) {
     console.error("mechanicData is not an array:", mechanicData);
     return null;
