@@ -26,7 +26,7 @@ const susLogger = (req, res, next) => {
     "/api/abilityvisibility",
 
     //Health Check
-    "/health",
+    "/health/live",
   ];
 
   if (

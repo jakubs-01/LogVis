@@ -332,6 +332,11 @@ class WarcraftLogsAPI {
     const query = QUERIES.FETCH_AUTH_USER_NAME;
     return this.executeQuery(query, {}, user_access_token);
   }
+
+  async fetchApiResponse() {
+    const query = QUERIES.FETCH_API_RESPONSE;
+    return this.executeQuery(query, {});
+  }
 }
 
 const WarcraftLogsAPIInstance = new WarcraftLogsAPI();

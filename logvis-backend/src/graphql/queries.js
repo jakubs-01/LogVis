@@ -7,6 +7,7 @@ const QUERIES = {
   FETCH_DEBUFF_EVENTS: `query DebuffWithCoordinates($reportCode: String!, $parsedabilityID: Float!, $parsedfightID: [Int!]) { reportData { report(code: $reportCode) { events(dataType: Debuffs abilityID: $parsedabilityID includeResources: false fightIDs: $parsedfightID) { data nextPageTimestamp } } } }`,
   FETCH_CLOSEST_EVENT: `query ClosestEventWithCoordinates($reportCode: String!, $parsedstartTime: Float!, $parsedendTime: Float!, $parsedtargetID: Int!, $parsedfightID: [Int!]) { reportData { report(code: $reportCode) { events(dataType: Resources includeResources: true fightIDs: $parsedfightID targetID: $parsedtargetID startTime: $parsedstartTime endTime: $parsedendTime) { data nextPageTimestamp } } } }`,
   FETCH_AUTH_USER_NAME: `query GetUserInfo { userData { currentUser{ name } } }`,
+  FETCH_API_RESPONSE: `query GetResponse {__type(name: "ReportMap") { fields { name } } }`,
 };
 
 module.exports = QUERIES;
