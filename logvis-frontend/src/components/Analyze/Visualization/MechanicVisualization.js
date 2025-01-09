@@ -7,15 +7,15 @@ import LoadingOverlay from "../../Shared/LoadingOverlay";
 import TimeLineVisualization from "./TimeLine/TimeLineVisualization";
 import { Box, Grid } from "@mui/material";
 const MechanicVisualization = ({ reportCode, fight }) => {
-  const [mechanicData, setMechanicData] = useState(null);
+  const [mechanicData, setMechanicData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [unSupportedBoss, setUnSupportedBoss] = useState(false);
   useEffect(() => {
     const fetchMechanicData = async () => {
       setIsLoading(true);
       // Clear existing data when starting a new fetch
-      setMechanicData(null);
-      console.log("MechanicVisualization UseEffect triggered");
+      setMechanicData([]);
+      console.log(mechanicData);
       try {
         const [damageResponse, debuffResponse] = await Promise.all([
           axios.get(process.env.REACT_APP_DAMAGE_EVENTS_API_URL, {
@@ -40,10 +40,15 @@ const MechanicVisualization = ({ reportCode, fight }) => {
         const mergedData = [...damageResponse.data, ...debuffResponse.data];
         setMechanicData(mergedData);
         console.log(mergedData);
-      } catch (error) {
-        console.error(error);
-      } finally {
+        console.log(mechanicData);
         setIsLoading(false);
+        setUnSupportedBoss(false);
+      } catch (error) {
+        if (error.response.status === 501) {
+          setUnSupportedBoss(true);
+        }
+        setIsLoading(false);
+        console.error(error);
       }
     };
 
@@ -52,37 +57,58 @@ const MechanicVisualization = ({ reportCode, fight }) => {
     }
   }, [reportCode, fight]);
 
+  useEffect(() => {
+    console.log("mechanicData changed:", mechanicData);
+  }, [mechanicData]);
+
   // Visualization Logic
-  return (
-    <Box>
-      <Box sx={{ position: "fixed" }}>
-        {!isLoading && mechanicData && mechanicData.length > 0 ? (
-          <Grid container spacing={0.5}>
-            <Grid item xs={8}>
-              <GameMap
-                coordinates={mechanicData}
-                bossName={fight.name}
-                fightStartTime={fight.startTime}
-                fightID={fight.id}
-                reportCode={reportCode}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TimeLineVisualization
-                events={mechanicData}
-                fightStartTime={fight.startTime}
-                fightID={fight.id}
-                reportCode={reportCode}
-              />
-            </Grid>
-          </Grid>
-        ) : (
+  if (unSupportedBoss) {
+    return <div>Boss not supported</div>;
+  }
+
+  console.log("Rendering with mechanicData:", mechanicData);
+
+  if (isLoading || !mechanicData || mechanicData.length === 0) {
+    return (
+      <Box>
+        <Box sx={{ position: "fixed" }}>
           <LoadingOverlay
             message="Loading fight data..."
             width={1002}
             height={668}
           />
-        )}
+        </Box>
+      </Box>
+    );
+  }
+
+  if (!Array.isArray(mechanicData)) {
+    console.error("mechanicData is not an array:", mechanicData);
+    return null;
+  }
+
+  return (
+    <Box>
+      <Box sx={{ position: "fixed" }}>
+        <Grid container spacing={0.5}>
+          <Grid item xs={8}>
+            <GameMap
+              coordinates={mechanicData}
+              bossName={fight.name}
+              fightStartTime={fight.startTime}
+              fightID={fight.id}
+              reportCode={reportCode}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TimeLineVisualization
+              events={mechanicData}
+              fightStartTime={fight.startTime}
+              fightID={fight.id}
+              reportCode={reportCode}
+            />
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
