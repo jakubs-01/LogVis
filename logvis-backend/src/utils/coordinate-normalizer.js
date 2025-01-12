@@ -1,3 +1,5 @@
+const logger = require("../services/logging-service");
+
 /**
  *
  * @param {float} region0 Region_0 value
@@ -11,6 +13,14 @@
  */
 
 function normalizeCoordinates(region0, region1, region3, region4, x, y) {
+  logger.debug("Normalizing coordinates", {
+    region0,
+    region1,
+    region3,
+    region4,
+    x,
+    y,
+  });
   const params = [region0, region1, region3, region4, x, y];
   if (!params.every((param) => typeof param === "number")) {
     throw new Error("Invalid parameter type");
@@ -22,6 +32,7 @@ function normalizeCoordinates(region0, region1, region3, region4, x, y) {
 
   const normalizedX = (x - xMin) / (xMax - xMin);
   const normalizedY = (y - yMin) / (yMax - yMin);
+  logger.debug("Normalized coordinates", { normalizedX, normalizedY });
   return [normalizedX, normalizedY];
 }
 

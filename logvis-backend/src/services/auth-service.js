@@ -5,6 +5,7 @@
 
 const axios = require("axios");
 const btoa = require("btoa");
+const logger = require("./logging-service");
 require("dotenv").config();
 
 /**
@@ -30,6 +31,7 @@ async function getAccessToken() {
     );
 
     if (response.status === 200) {
+      logger.debug("Access token fetched");
       return response.data.access_token;
     } else {
       throw new Error(

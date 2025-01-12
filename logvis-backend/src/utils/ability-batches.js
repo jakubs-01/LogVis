@@ -1,3 +1,5 @@
+const logger = require("../services/logging-service");
+
 /**
  * @typedef {Object} AbilityBatchRange
  * @property {string} start - The start timestamp of the ability range in "mm:ss.ms" format.
@@ -141,6 +143,11 @@ function findRangeForTimeStamp(spellID, timestamp) {
     const rangeEndMs = convertToMs(range.end);
 
     if (timestamp >= rangeStartMs && timestamp <= rangeEndMs) {
+      logger.debug("Found matching range for spell ID", {
+        spellID,
+        timestamp,
+        range,
+      });
       return range.set; // Found the matching range
     } else if (timestamp < rangeStartMs) {
       right = mid - 1; // Look left
@@ -148,6 +155,7 @@ function findRangeForTimeStamp(spellID, timestamp) {
       left = mid + 1; // Look right
     }
   }
+  logger.debug("No matching range found for spell ID", { spellID, timestamp });
   return null; // No matching range
 }
 

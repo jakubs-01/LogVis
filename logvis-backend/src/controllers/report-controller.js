@@ -66,7 +66,7 @@ exports.getDamageEvents = async (req, res) => {
   }
   try {
     if (!boss.abilities || boss.abilities.length === 0) {
-      return res.json([]); // Return empty array if no debuffs to query
+      return res.json([]); // Return empty array if no damage events to query
     }
     const results = await Promise.all(
       boss.abilities.map(async (abilityId) => {
