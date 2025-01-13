@@ -29,7 +29,7 @@ const apiService = {
       return response;
     } catch (error) {
       console.log(error);
-      return this.handleError(error);
+      return apiService.handleError(error);
     }
   },
 
