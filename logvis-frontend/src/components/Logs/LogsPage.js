@@ -23,6 +23,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import axios from "axios";
 import FlagCell from "./FlagCell";
+import ApiService from "../../service/ApiService";
 
 const LogRow = ({ log }) => {
   const [open, setOpen] = React.useState(false);
@@ -166,9 +167,7 @@ const LogsPage = () => {
   React.useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const response = await axios.get(process.env.REACT_APP_LOGS_API_URL, {
-          withCredentials: true,
-        });
+        const response = await ApiService.getLogs();
         const data = response.data.sort(
           (a, b) =>
             new Date(b.request.timestamp) - new Date(a.request.timestamp)
@@ -186,9 +185,7 @@ const LogsPage = () => {
     fetchLogs();
     const intervalId = setInterval(async () => {
       try {
-        const response = await axios.get(process.env.REACT_APP_LOGS_API_URL, {
-          withCredentials: true,
-        });
+        const response = await ApiService.getLogs();
         const data = response.data.sort(
           (a, b) =>
             new Date(b.request.timestamp) - new Date(a.request.timestamp)

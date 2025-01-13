@@ -21,6 +21,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ApiService from "../../service/ApiService";
 import axios from "axios";
 
 const LogRow = ({ log }) => {
@@ -177,12 +178,8 @@ const QueryLogsPage = () => {
   React.useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const response = await axios.get(
-          process.env.REACT_APP_QUERY_LOGS_API_URL,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await ApiService.getQueryLogs();
+
         const data = response.data.sort(
           (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
         );
@@ -199,12 +196,7 @@ const QueryLogsPage = () => {
     fetchLogs();
     const intervalId = setInterval(async () => {
       try {
-        const response = await axios.get(
-          process.env.REACT_APP_QUERY_LOGS_API_URL,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await ApiService.getQueryLogs();
         const data = response.data.sort(
           (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
         );

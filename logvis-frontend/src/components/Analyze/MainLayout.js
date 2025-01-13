@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import LoadingOverlay from "../Shared/LoadingOverlay";
+import ApiService from "../../service/ApiService";
 const MainLayout = ({
   reportCode,
   fights,
@@ -58,22 +59,13 @@ const MainLayout = ({
     const fetchData = async (code) => {
       try {
         setIsLoading(true);
-        const exists = await axios.get(
-          process.env.REACT_APP_TITLE_AND_AUTHOR_API_URL,
-          {
-            params: { reportCode: code },
-            withCredentials: true,
-          }
-        );
+        const exists = await ApiService.getTitleAndAuthor(code);
 
         if (exists.data.title !== null) {
           setTitle(exists.data.title);
         }
 
-        const response = await axios.get(process.env.REACT_APP_FIGHTS_API_URL, {
-          params: { reportCode: code },
-          withCredentials: true,
-        });
+        const response = await ApiService.getFights(code);
 
         setFights(response.data);
       } catch (error) {

@@ -9,6 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import SearchInput from "./SearchInput";
+import ApiService from "../../service/ApiService";
 
 export default function NavBar({
   setReportCode,
@@ -27,19 +28,13 @@ export default function NavBar({
     const fetchUserName = async () => {
       setFetchingUserName(true);
       try {
-        const response = await axios.get(
-          process.env.REACT_APP_USER_DATA_API_URL,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await ApiService.getUserData();
         if (response.status === 200) {
           setUserName(response.data.userName);
           setFetchingUserName(false);
         }
       } catch (error) {
         setUserName(false);
-        console.error("User not logged in", error);
         setFetchingUserName(false);
       }
     };

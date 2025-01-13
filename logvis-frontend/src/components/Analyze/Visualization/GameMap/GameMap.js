@@ -9,6 +9,7 @@ import { useZoomControls } from "../../../../hooks/zoomControls";
 import { AbilityToggle } from "../../../../hooks/abilityToggle";
 import MapTooltip from "./Tooltips/MapTooltip";
 import axios from "axios";
+import ApiService from "../../../../service/ApiService";
 
 const GameMap = ({
   coordinates,
@@ -38,9 +39,7 @@ const GameMap = ({
   useEffect(() => {
     const fetchAbilityVisibility = async () => {
       try {
-        const response = await axios.get(
-          process.env.REACT_APP_ABILITY_VISIBILITY_API_URL
-        );
+        const response = await ApiService.getAbilityVisibility();
         setAbilitySetVisibility(response.data);
       } catch (error) {
         console.error("Error fetching ability visibility:", error);

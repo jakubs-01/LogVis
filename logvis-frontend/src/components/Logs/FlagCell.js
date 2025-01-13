@@ -3,6 +3,7 @@ import axios from "axios";
 import WorldFlag from "react-world-flags";
 import { TableCell } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import ApiService from "../../service/ApiService";
 
 const FlagCell = ({ ip }) => {
   const [countryCode, setCountryCode] = useState(null);
@@ -239,11 +240,12 @@ const FlagCell = ({ ip }) => {
     if (ip) {
       const fetchCountryCode = async () => {
         try {
+          const response = await ApiService.getIpInfo(ip);
           // Replace 'your-api-token' with your actual API token from ipinfo.io
-          const response = await axios.get(
-            `${process.env.REACT_APP_IPINFO_API_URL}?ip=${ip}`,
-            { withCredentials: true } // Send cookie credentials
-          );
+          // const response = await axios.get(
+          //   `${process.env.REACT_APP_IPINFO_API_URL}?ip=${ip}`,
+          //   { withCredentials: true } // Send cookie credentials
+          // );
           setCountryCode(getCountryCode(response.data.country));
         } catch (error) {
           console.error("Error fetching IP geolocation:", error);

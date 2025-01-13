@@ -7,6 +7,8 @@ import LoadingOverlay from "../../Shared/LoadingOverlay";
 import TimeLineVisualization from "./TimeLine/TimeLineVisualization";
 import { Box, Grid } from "@mui/material";
 import BossRoomMappings from "../../../config/bossRoomMappings";
+import ApiService from "../../../service/ApiService";
+
 const MechanicVisualization = ({ reportCode, fight }) => {
   const [mechanicData, setMechanicData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,22 +20,8 @@ const MechanicVisualization = ({ reportCode, fight }) => {
       setMechanicData([]);
       try {
         const [damageResponse, debuffResponse] = await Promise.all([
-          axios.get(process.env.REACT_APP_DAMAGE_EVENTS_API_URL, {
-            params: {
-              reportCode,
-              bossName: fight.name,
-              fightIDs: fight.id,
-            },
-            withCredentials: true,
-          }),
-          axios.get(process.env.REACT_APP_DEBUFF_EVENTS_API_URL, {
-            params: {
-              reportCode,
-              bossName: fight.name,
-              fightIDs: fight.id,
-            },
-            withCredentials: true,
-          }),
+          ApiService.getDamageEvents(reportCode, fight.name, fight.id),
+          ApiService.getDebuffEvents(reportCode, fight.name, fight.id),
         ]);
 
         // Assuming both responses have a similar structure, e.g., `response.data` contains the data array
