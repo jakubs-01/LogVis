@@ -275,7 +275,6 @@ async function extractClosestEvent(eventData, startTime, sourceID) {
     );
     return null;
   }
-  console.log(filteredEvents[closestPoint]);
   return filteredEvents[closestPoint];
 }
 
