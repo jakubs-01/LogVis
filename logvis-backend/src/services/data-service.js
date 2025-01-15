@@ -96,8 +96,8 @@ async function extractMappedDamageEvents(
               events.timestamp,
               events.targetID
             );
-            events.x = closestEvent.x;
-            events.y = closestEvent.y;
+            events.x = closestEvent ? closestEvent.x : 0;
+            events.y = closestEvent ? closestEvent.y : 0;
           }
           const relativeTimeStamp =
             events.timestamp - fightStartTime[0].startTime;
@@ -197,8 +197,8 @@ async function extractMappedDebuffEvents(
             regions[1],
             regions[2],
             regions[3],
-            parseFloat(closestEvent.x),
-            parseFloat(closestEvent.y)
+            parseFloat(closestEvent ? closestEvent.x : 0),
+            parseFloat(closestEvent ? closestEvent.y : 0)
           );
 
           return {
@@ -245,6 +245,7 @@ async function extractClosestEvent(eventData, startTime, sourceID) {
         : event.sourceID === sourceID)
     );
   });
+  let closestPoint = -1;
   let left = 0,
     right = filteredEvents.length - 1;
   while (left <= right) {
@@ -258,13 +259,22 @@ async function extractClosestEvent(eventData, startTime, sourceID) {
       right = right - 1;
     }
   }
-  const closestPoint =
+  closestPoint =
     left >= filteredEvents.length ||
     (right >= 0 &&
       Math.abs(filteredEvents[right].timestamp - startTime) <=
         Math.abs(filteredEvents[left].timestamp - startTime))
       ? right
       : left;
+  if (closestPoint === -1) {
+    console.log(
+      "Could not find closest event for ",
+      sourceID,
+      " at approximately",
+      startTime
+    );
+    return null;
+  }
   console.log(filteredEvents[closestPoint]);
   return filteredEvents[closestPoint];
 }
