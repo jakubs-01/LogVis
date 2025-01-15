@@ -8,6 +8,7 @@ const getAccessToken = require("./auth-service");
 const NodeCache = require("node-cache");
 const QUERIES = require("../graphql/queries");
 const QueryLog = require("../models/querylog");
+const logger = require("./logging-service");
 
 /**
  * Class representing the WarcraftLogs API service
@@ -57,6 +58,14 @@ class WarcraftLogsAPI {
    */
   async executeQuery(query, variables, user_access_token) {
     const startTime = performance.now(); // Start timing
+    if (process.env.NODE_ENV === "development") {
+      const regex = /query\s+([a-zA-Z_][a-zA-Z0-9_]*)/g;
+      const match = query.match(regex);
+      if (match) {
+        const queryName = match[0];
+        logger.debug("Executing query", { queryName, variables });
+      }
+    }
     let fromCache = false;
     try {
       const cacheKey =

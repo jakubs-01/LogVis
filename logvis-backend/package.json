@@ -30,7 +30,8 @@
     "node-cache": "^5.1.2",
     "nodemon": "^3.1.9",
     "pkce-challenge": "^4.1.0",
-    "redis": "^4.7.0"
+    "redis": "^4.7.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "axios-mock-adapter": "^2.1.0",

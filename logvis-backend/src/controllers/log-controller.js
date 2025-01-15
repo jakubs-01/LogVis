@@ -2,6 +2,7 @@ const logService = require("../services/log-db-service");
 const IpInfo = require("../models/ip-info"); // Import the model
 const NodeCache = require("node-cache");
 const { Long } = require("mongodb"); // Add this at the top with other requires
+const logger = require("../services/logging-service");
 /**
  * Fetches all logs from the database
  * @param {Object} req - Express request object
@@ -22,6 +23,7 @@ exports.getLogs = async (req, res) => {
     return;
   }
   const logs = await logService.getAllLogs();
+  logger.debug("Fetched logs", { size: logs.length });
   res.json(logs);
 };
 
@@ -31,6 +33,7 @@ exports.getQueryLogs = async (req, res) => {
     return;
   }
   const logs = await logService.getAllQueryLogs();
+  logger.debug("Fetched query logs", { size: logs.length });
   res.json(logs);
 };
 

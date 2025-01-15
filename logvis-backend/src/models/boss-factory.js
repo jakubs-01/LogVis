@@ -1,3 +1,5 @@
+const logger = require("../services/logging-service");
+
 /**
  * @fileoverview Factory module for creating boss instances from the Nerubar Palace raid
  * @module models/boss-factory
@@ -38,6 +40,7 @@ function createBossInstance(bossName) {
     case "queenansurek":
       return new Ansurek();
     default:
+      logger.debug("Boss not supported", { bossName });
       throw new Error(`Boss "${bossName}" not found`);
   }
 }
