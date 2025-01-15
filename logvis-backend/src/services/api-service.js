@@ -306,7 +306,7 @@ class WarcraftLogsAPI {
     }
     const parsedtargetID = parseInt(targetID);
     const parsedstartTime = parseFloat(startTime) - 1000;
-    const parsedendTime = startTime + 2000;
+    const parsedendTime = startTime + 1000;
     const parsedfightID = parseInt(fightID);
     const query = QUERIES.FETCH_CLOSEST_EVENT;
     return this.executeQuery(

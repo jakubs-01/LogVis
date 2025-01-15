@@ -212,7 +212,8 @@ exports.getClosestEvent = async (req, res) => {
     );
     const filteredEvents = await dataService.extractClosestEvent(
       events,
-      startTime
+      startTime,
+      targetID
     );
     res.json(filteredEvents);
   } catch (error) {

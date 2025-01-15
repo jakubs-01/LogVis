@@ -93,7 +93,8 @@ async function extractMappedDamageEvents(
               );
             const closestEvent = await extractClosestEvent(
               rawEventData,
-              events.timestamp
+              events.timestamp,
+              events.targetID
             );
             events.x = closestEvent.x;
             events.y = closestEvent.y;
@@ -180,7 +181,8 @@ async function extractMappedDebuffEvents(
         );
         const closestEvent = await extractClosestEvent(
           rawEventData,
-          events.timestamp
+          events.timestamp,
+          events.targetID
         );
         const relativeTimeStamp =
           events.timestamp - fightStartTime[0].startTime;
@@ -228,13 +230,26 @@ async function extractMappedDebuffEvents(
  * @param {number} startTime - The timestamp to find the closest event to.
  * @returns {Promise<Object>} A promise that resolves to the closest event object.
  */
-async function extractClosestEvent(eventData, startTime) {
+async function extractClosestEvent(eventData, startTime, sourceID) {
   const events = eventData.data.reportData.report.events.data;
+  //! This fix is okay for now, but may need to be changed in the future
+  const filteredEvents = events.filter((event) => {
+    return (
+      (event.type === "resourcechange" ||
+        event.type === "heal" ||
+        event.type === "cast") &&
+      event.x !== undefined &&
+      event.y !== undefined &&
+      (event.type === "heal"
+        ? event.targetID === sourceID
+        : event.sourceID === sourceID)
+    );
+  });
   let left = 0,
-    right = events.length - 1;
+    right = filteredEvents.length - 1;
   while (left <= right) {
     const mid = Math.floor((left + right) / 2);
-    const current = events[mid];
+    const current = filteredEvents[mid];
     if (current.timestamp === startTime) {
       return current;
     } else if (current.timestamp < startTime) {
@@ -244,13 +259,14 @@ async function extractClosestEvent(eventData, startTime) {
     }
   }
   const closestPoint =
-    left >= events.length ||
+    left >= filteredEvents.length ||
     (right >= 0 &&
-      Math.abs(events[right].timestamp - startTime) <=
-        Math.abs(events[left].timestamp - startTime))
+      Math.abs(filteredEvents[right].timestamp - startTime) <=
+        Math.abs(filteredEvents[left].timestamp - startTime))
       ? right
       : left;
-  return events[closestPoint];
+  console.log(filteredEvents[closestPoint]);
+  return filteredEvents[closestPoint];
 }
 
 /**
